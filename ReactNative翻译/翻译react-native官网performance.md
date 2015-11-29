@@ -14,9 +14,19 @@
 
 卡顿经常会发生在页面转场动画上：当进行页面转场的时候，js线程要计算新页面中所有的组件，以便通知原生去展现view。如果动画是js控制的，就通常会消耗几帧。所以，组件在`componentDidMount`中进行的工作会导致转场动画的掉帧。
 
-另一个例子是触摸事件的反馈：
+另一个例子是触摸事件的反馈：如果你的js线程正在忙碌着，点击TouchableOpacity会有延迟。这是因为js不能及时的处理触摸事件，导致原生view 不能及时的做出反应。
 ### Main thread（UI thread） frame rate【UI线程帧数】
+你可能会注意到`NavigatorIOS`的性能要比`Navigator`好，这是因为`Navigator`的转场动画是由主线程控制的，js的掉帧并不能影响它。参考阅读来帮助你选择导航器http://facebook.github.io/react-native/docs/navigator-comparison.html
 
+同样的，ScrollView的滚动永远不会受到js的影响，这是因为ScrollView完全是基于原生的主线程的。尽管会有滚动事件分发到js，但这并不影响滚动的动作。
+
+
+##常见问题和解决方案
+###开发模式 dev=true
+在开发模式下js的性能会受到严重的影响。这是不可避免的:要提供详细的提示和错误检查js就要有大量的工作要做。
+
+###转场动画不流畅
+如上所述，
 
 
 
