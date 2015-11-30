@@ -59,7 +59,7 @@ todo
 ##text组件的opacity从他的父亲view继承，且不能修改
 https://github.com/facebook/react-native/issues/1314
 
-父组件使用rgba来写透明度，而不是opacity。请参考：https://github.com/facebook/react-native/commit/3c04bfcf53ced10aa3afc378b2b35afbfebc9678
+解决方案：父组件使用rgba来写透明度，而不是opacity。请参考：https://github.com/facebook/react-native/commit/3c04bfcf53ced10aa3afc378b2b35afbfebc9678
 
 ##绝对定位是基于父组件的，这与css很不同。
 要想基于页面进行定位，必须要放到根节点下面，不知道还有没有别的解决方案。参考地址：https://github.com/facebook/react-native/issues/3210
