@@ -96,6 +96,16 @@ Listview可以使用`rowHasChanged`方法来降低diff判断的计算损耗。�
 
 同样的，`shouldComponentUpdate`可以精确的描述出需要重新渲染的状态。如果你正在写纯组件（render方法的返回完全由props和state来决定），使用`PureRenderMixin`可以帮助你提升性能。同样的，不可变数据类型也同样会提升性能和降低代码复杂度，特别是在大数据量的对象深比对上。
 
+###js线程在同一时间做太多的事就会掉帧
+过场动画卡顿就是因为这个原因，在某些场景下也会出现这个问题。使用InteractionManager是比较好的办法，但当你由于某些原因不能延迟执行任务时，你可以试试LayoutAnimatio你。
+
+AnimatedApi的动画效果依赖于js，而LaoutAnimation使用了CoreAnimation 完全不受js线程和主线程掉帧的影响。
+
+你可以查看相关文档来学习如何使用。
+
+注意，只支持iOS。而且，只支持静态动画。如果需要动画过程有交互，还要使用Animated。
+
+
 
 
 
