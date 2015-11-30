@@ -4,7 +4,9 @@
 
 ##如果引入一个模块，但是这个模块没有写【module.exports】，报的错误描述不对
 ![](media/14486188240052.jpg)
-##定义组件不能使用class name extends Component的形式，有state取不到的bug，改成React.createClass后就好了
+##定义组件不能使用class name extends Component的形式，有state取不到的bug.
+
+改成React.createClass后就好了
 
 ##TextInput的borederColor,color在安卓下不好使用
 
