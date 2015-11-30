@@ -56,6 +56,60 @@ todo
 
 
 
+##text组件的opacity从他的父亲view继承，且不能修改
+https://github.com/facebook/react-native/issues/1314
+
+父组件使用rgba来写透明度，而不是opacity。请参考：https://github.com/facebook/react-native/commit/3c04bfcf53ced10aa3afc378b2b35afbfebc9678
+
+##绝对定位是基于父组件的，这与css很不同。
+要想基于页面进行定位，必须要放到根节点下面，不知道还有没有别的解决方案。参考地址：https://github.com/facebook/react-native/issues/3210
+
+这是一个解决方案，是用原生来做的，只支持ios。地址：https://github.com/brentvatne/react-native-overlay
+
+## 不支持zIndex
+参考地址：https://github.com/facebook/react-native/issues/1076
+
+##安卓和ios绝对定位对overflow的反应不同
+```
+<View style={css.parent}>
+	<View style={css.child}>
+	</View>
+</View>
+        
+parent:{
+   width:200,
+   height:200,
+   backgroundColor:'green',
+   overflow:'visible',
+},
+
+child:{
+   position:'absolute',
+   top: 10,
+   bottom: 0,
+   left: 10,
+   right: 0,
+
+   width:400,
+   height:500,
+   backgroundColor:'red',
+
+},             
+```
+1. parent上overflow=hidden，安卓ios表现一致，parent会挡住绝对定位的child
+2. parent上overflow=visible，安卓parent仍然会挡住child，ios不会挡住。
+
+注意：overflow在安卓下默认是hidden，在ios下默认是visible
+
+##overflow在安卓下默认是hidden，在ios下默认是visible
+
+overflow在安卓下默认是hidden，在ios下默认是visible
+
+
+
+
+
+
 
 
 
