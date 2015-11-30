@@ -1,4 +1,4 @@
-# 翻译react-native官网performance
+# react-native的性能
 
 原文地址： http://facebook.github.io/react-native/docs/performance.html
 
@@ -26,7 +26,52 @@
 在开发模式下js的性能会受到严重的影响。这是不可避免的:要提供详细的提示和错误检查js就要有大量的工作要做。
 
 ###转场动画不流畅
-如上所述，
+如上所述，`Navigator`的转场动画是js控制的。就比如说从右推进来的这个动画效果：每一帧新页面都会从右像左移动一点，其实就是改变新页面的x轴坐标。在这过程中的每一帧，js都要告诉主线程新的x坐标是多少。如果js被别的任务锁定了，那这一帧就不能及时的更新x坐标了，你就会觉得动画卡顿了。
+
+这个问题的最有效的解决办法就是把js控制的动画效果让主线程自己来控制。如果套用上面的场景可以这样重构，在动画的开始，js就计算好这次动画的所有x坐标值的数组，传递给主线程。这样的话，动画开始后，就不受js性能的影响了，就算动画刚开始有一些卡顿，你可能也注意不到。
+
+但是，目前`Navigator`还不是这样实现的，所以，我们提供了`InteractionManager`来帮助你在转场动画的过程中，新页面只渲染必要的少量的内容。
+
+`InteractionManager.runAfterInteractions`只有一个函数类型的参数，当转场动画结束，这个回调函数就会被触发(所有基于`Animated`API的动画都会触发InteractionManager.runAfterInteractions)。
+
+示例代码如下：
+
+```
+class ExpensiveScene extends React.Component {
+  constructor(props, context) {
+    super(props, context);
+    this.state = {renderPlaceholderOnly: true};
+  }
+
+  componentDidMount() {
+    InteractionManager.runAfterInteractions(() => {
+      this.setState({renderPlaceholderOnly: false});
+    });
+  }
+
+  render() {
+    if (this.state.renderPlaceholderOnly) {
+      return this._renderPlaceholderView();
+    }
+
+    return (
+      <View>
+        <Text>Your full view goes here</Text>
+      </View>
+    );
+  }
+
+
+  _renderPlaceholderView() {
+    return (
+      <View>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
+};
+```
+你不仅可以渲染一个loading指示器，也可以渲染你新页面内容的一小部分。比如说，当你打开Facebook你会看到
 
 
 
