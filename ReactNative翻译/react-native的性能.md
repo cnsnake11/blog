@@ -71,7 +71,43 @@ class ExpensiveScene extends React.Component {
   }
 };
 ```
-你不仅可以渲染一个loading指示器，也可以渲染你新页面内容的一小部分。比如说，当你打开Facebook你会看到
+你不仅可以渲染一个loading指示器，也可以渲染你新页面内容的一小部分。比如说，当你打开Facebook你会看到将要放入文本的灰色的矩形。如果你要在新页面要放入一个地图，你可以放一个灰色的占位符或者一个loading直到动画结束，否则地图的初始化一定会导致转场动画的掉帧。
+
+### 大数据量的ListView初始化慢或者滚动卡顿
+我们提供了一些方法来调优，但是尚没有万能的办法，你可以尝试以下选项。
+####initialListSize 初始帧渲染行数
+这个属性定义了第一帧渲染list的行数。如果我们希望某些内容非常快的展现在页面上，可以设置`initialListSize`等于1，其余的行会在后边的帧里来渲染。每一帧渲染的行数是由`pageSize`决定的。
+####pageSize 每一帧渲染行数
+初始化使用`initialListSize`，`pageSzie`决定了每一帧渲染的行数。默认值是1，如果你的view很小而且渲染很简单，你可以加大这个数量。你可以通过测试来找到你满足你需求的值。
+####scrollRenderAheadDistance 触发渲染的距离
+在距离显示区域多远就开始渲染。
+
+如果你的列表有2000行，那么一次渲染所有会耗费大量内存和计算资源。`scrollRenderAheadDistance`可以让你定义距离显示区域多远之内的rows可以被渲染。
+
+####removeClippedSubviews删除屏幕外子视图
+此值为true表示屏幕外的字视图(行容器是overflow=hidden的)会被从原生视图中移除。他可以提升列表滚动的性能。这个属性默认值就是ture。
+这个属性对大数据列表非常重要。在安卓端overflow的默认值就是hidden，但是在ios端需要手动设置overflow的值为hidden在行容器上。
+
+###不需要立即展现的组件渲染很慢
+这通常是由listvew引起的，你先想办法调整一下listview。上面我们也提供了很多手段来分步渲染视图。Listview也可以横向展现，好好利用这一点。
+
+###重新渲染那些很少改变的视图很慢
+Listview可以使用`rowHasChanged`方法来降低diff判断的计算损耗。如果你使用了不可变数据类型，使用`=`就可以简单的判断是否是同一对象了。
+
+同样的，`shouldComponentUpdate`可以精确的描述出需要重新渲染的状态。如果你正在写纯组件（render方法的返回完全由props和state来决定），使用`PureRenderMixin`可以帮助你提升性能。同样的，不可变数据类型也同样会提升性能和降低代码复杂度，特别是在大数据量的对象深比对上。
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
