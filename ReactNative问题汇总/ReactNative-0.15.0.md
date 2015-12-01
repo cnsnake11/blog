@@ -104,6 +104,28 @@ child:{
 ##overflow在安卓下默认是hidden，在ios下默认是visible
 
 overflow在安卓下默认是hidden，在ios下默认是visible
+##TouchableOpacity和TouchableHighlight，第一次点击不触发press
+
+场景：
+ 
+1. 当touch组件在listview or scrollView的时候
+2. 焦点在某个输入框中
+
+解决方案：ListView or ScrollView上加入属性keyboardShouldPersistTaps={true}
+
+ 
+####scrollview的keyboardShouldPersistTaps bool 
+When false, tapping outside of the focused text input when the keyboard is up dismisses the keyboard. When true, the scroll view will not catch taps, and the keyboard will not dismiss automatically. The default value is false.
+
+false的时候scrollview会catch事件，然后消失键盘，事件不会传递到touch。
+
+true的时候相反。
+
+经过测试这个属性ListView组件也可以用。
+
+参考地址：https://github.com/facebook/react-native/issues/4087
+
+
 
 
 
