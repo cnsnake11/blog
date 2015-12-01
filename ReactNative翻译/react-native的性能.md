@@ -104,7 +104,36 @@ AnimatedApi的动画效果依赖于js，而LaoutAnimation使用了CoreAnimation 
 你可以查看相关文档来学习如何使用。
 
 注意，只支持iOS。而且，只支持静态动画。如果需要动画过程有交互，还要使用Animated。
+###在屏幕上移动view (scrolling, translating, rotating) ，UI线程会掉帧
+这经常发生在一个背景透明的text在一个图片上，或者需要alpha合成并重新渲染view的时候。你可以使用shouldRasterizeIOS或者renderToHardwareTextureAndroid来改变这种情况。
 
+但是这会极大的耗费内存。最好使用以上属性的时候监控一下内存，看能否接受。如果，不移动view的话，就一定要关了这2个属性。
+### 改变图片大小的动画会使UI线程掉帧
+在ios中，调整图片的高宽会导致从原始图片的重新剪裁。这很耗费资源，特别是大图。
+
+最好用transform: [{scale}]来实现改变图片大小的动画。
+
+一个场景是点击一个图并全屏展现的时候。
+###Touch系列组件响应很慢
+有时候点击一个touch组件，onPress事件会触发setSate，导致js线程立刻进行大量的计算工作，最终给用户的效果就是高亮或者透明的效果有延迟。
+
+解决办法是使用requestAnimationFrame
+
+```
+handleOnPress() {
+  // Always use TimerMixin with requestAnimationFrame, setTimeout and
+  // setInterval
+  this.requestAnimationFrame(() => {
+    this.doExpensiveAction();
+  });
+}
+```
+###分析工具
+用一些工具来获取js线程和UI主线程的细节信息。
+
+在ios中使用an invaluable tool，安卓使用systrace。
+
+For iOS, Instruments are an invaluable tool, and on Android you should learn to use systrace.
 
 
 
