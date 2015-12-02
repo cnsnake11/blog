@@ -135,6 +135,10 @@ true的时候相反。
 
 Invariant Violation: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: object. Check the render method of `Result`.
 
+解决方案：当时是header依赖search，search依赖result，result依赖header。然后我把header对search的依赖去掉，移动到更上一级中，就好了。
+
+这个问题未来可能是个大坑。
+
 
 
 
