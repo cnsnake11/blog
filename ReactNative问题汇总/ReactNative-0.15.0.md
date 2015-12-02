@@ -126,6 +126,17 @@ true的时候相反。
 参考地址：https://github.com/facebook/react-native/issues/4087
 
 
+##安卓不支持textDecorationLine的所有值
+参考地址：https://github.com/facebook/react-native/pull/3816
+
+##遇到了一个require有循环引用的情况，然后会报错
+
+报错如下：
+
+Invariant Violation: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: object. Check the render method of `Result`.
+
+
+
 
 
 
