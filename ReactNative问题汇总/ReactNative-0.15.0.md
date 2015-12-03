@@ -139,7 +139,25 @@ Invariant Violation: Element type is invalid: expected a string (for built-in co
 
 这个问题未来可能是个大坑。
 
+##对自定义组件写style，不会自动传递给此组件的render根节点
 
+比如自定组件A的render方法如下
+
+	render(){
+		return <View></View>
+	}
+
+使用A的时候如下
+
+	<A style={{backgroundColor:'red'}}/>
+	
+背景色不会有任何的改变。
+
+解决方案：可以这样定义A的render
+
+	render(){
+		return <View style={this.props.style}></View>
+	}
 
 
 
