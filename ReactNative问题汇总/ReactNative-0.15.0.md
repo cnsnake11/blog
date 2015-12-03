@@ -158,6 +158,11 @@ Invariant Violation: Element type is invalid: expected a string (for built-in co
 	render(){
 		return <View style={this.props.style}></View>
 	}
+	
+	
+	
+###SwitchAndroid组件不能用，引入就报错
+todo 待寻找解决方案
 
 
 
