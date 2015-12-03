@@ -1,4 +1,4 @@
-# ReactNative组件设计思考
+# ReactNative组件状态设计思考
 
 
 设计React组件与设计一个jquery组件或者一个原生js组件最大的区别就是状态的设计。
