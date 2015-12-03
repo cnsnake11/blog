@@ -1,4 +1,4 @@
-# 定时器 Timers
+# 定时器 Timers -未完
 
 原文地址：http://facebook.github.io/react-native/docs/timers.html
 
@@ -65,3 +65,5 @@ var Component = React.createClass({
 ```
 
 We strongly discourage using the global setTimeout(...) and recommend instead that you use this.setTimeout(...) provided by react-timer-mixin. This will eliminate a lot of hard work tracking down bugs, such as crashes caused by timeouts firing after a component has been unmounted.
+
+
