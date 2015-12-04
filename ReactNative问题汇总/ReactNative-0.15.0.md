@@ -162,7 +162,19 @@ Invariant Violation: Element type is invalid: expected a string (for built-in co
 	
 	
 ###SwitchAndroid组件不能用，引入就报错
-todo 待寻找解决方案
+
+这个问题开始时真没想到会是个大坑，弄了差不多快一天的时间。。。。。。
+
+一开始，发现官方其实还发布了平台通用的Switch组件,不过文档中没有，so翻看源码看怎么用，里面注释都很清楚。
+
+在一个新的工程里能正常使用，但是在我的工程里就是死也显示不出来。
+
+我就开始各种测试，各种升级，各种删了重装。。。。
+
+最后终于发现是我工程里的android打包环境可能太旧了或者被我改过了啥【我印象中是没改过的】，把这个环境删了，然后用`react-native android`命令重新生成，然后重新打包，就一切都ok了。
+
+
+
 
 
 
