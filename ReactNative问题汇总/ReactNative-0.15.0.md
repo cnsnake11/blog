@@ -173,6 +173,11 @@ Invariant Violation: Element type is invalid: expected a string (for built-in co
 
 最后终于发现是我工程里的android打包环境可能太旧了或者被我改过了啥【我印象中是没改过的】，把这个环境删了，然后用`react-native android`命令重新生成，然后重新打包，就一切都ok了。
 
+###安卓中switch左侧显示不全
+尝试用paddingLeft width等值让其显示全，没有用。
+
+坐等官网修复。
+
 
 
 
