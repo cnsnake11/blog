@@ -1,4 +1,7 @@
-# Navigator Comparison -未完
+# Navigator Comparison 
+
+###这篇看完发现没啥可翻的，记住结论就可以了：使用Navigator，不要用NavigatorIOS。
+
 The differences between Navigator and NavigatorIOS are a common source of confusion for newcomers.
 
 Both Navigator and NavigatorIOS are components that allow you to manage the navigation in your app between various "scenes" (another word for screens). They manage a route stack and allow you to pop, push, and replace states. In this way, they are similar to the html5 history API. The primary distinction between the two is that NavigatorIOS leverages the iOS UINavigationController class, and Navigator re-implements that functionality entirely in JavaScript as a React component. A corollary of this is that Navigator will be compatible with Android and iOS, whereas NavigatorIOS will only work on the one platform. Below is an itemized list of differences between the two.
