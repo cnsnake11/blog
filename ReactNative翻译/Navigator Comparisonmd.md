@@ -1,5 +1,8 @@
 # Navigator Comparison 
 
+
+原文地址：http://facebook.github.io/react-native/docs/navigator-comparison.html
+
 ###这篇看完发现没啥可翻的，记住结论就可以了：使用Navigator，不要用NavigatorIOS。
 
 The differences between Navigator and NavigatorIOS are a common source of confusion for newcomers.
