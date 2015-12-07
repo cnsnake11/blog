@@ -179,6 +179,11 @@ Invariant Violation: Element type is invalid: expected a string (for built-in co
 坐等官网修复。
 
 
+## 安卓中image不支持defaultSource
+
+## RN中的服务器地址的image，必须要给一个高宽
+动态高宽的图片，如何支持还需要找解决方案
+
 
 
 
