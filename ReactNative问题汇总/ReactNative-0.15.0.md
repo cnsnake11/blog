@@ -184,6 +184,8 @@ Invariant Violation: Element type is invalid: expected a string (for built-in co
 ## RN中的服务器地址的image，必须要给一个高宽
 动态高宽的图片，如何支持还需要找解决方案
 
+**如果父容器是flexDirection=column的，宽度貌似可以不写，因为宽默认就是100%了，待测试**
+
 
 
 
