@@ -8,6 +8,16 @@
 2. 使用RN组件规范的displayName代替自定义的_compName;
 2. 搜索历史的存储和展现
 5. listview的下拉刷新
+6. detail页面的上拉查看详情
 6. RN的mvc开发框架flux
 7. RN动画与CSS3动画的异同
+8. RN中cookie的使用与测试
+9. filder的使用推广
+10. fetch是否需要封装
+11. 校验的封装
+12. 第三方开发组件的集成规范和方案
+13. 组件间通信的封装
+	14. http://www.ghugo.com/react-native-communicate/
+	15. http://www.ghugo.com/react-native-event-emitter/
+16. 面向状态设计还是面向接口设计的思考
 
