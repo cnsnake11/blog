@@ -186,6 +186,9 @@ Invariant Violation: Element type is invalid: expected a string (for built-in co
 
 **如果父容器是flexDirection=column的，宽度貌似可以不写，因为宽默认就是100%了，待测试**
 
+##安卓中dimensions获得window的高不准，差了20左右，
+华为p8
+
 
 
 

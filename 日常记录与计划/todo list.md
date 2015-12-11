@@ -20,4 +20,5 @@
 	14. http://www.ghugo.com/react-native-communicate/
 	15. http://www.ghugo.com/react-native-event-emitter/
 16. 面向状态设计还是面向接口设计的思考
+17. 文档采用代码即文档的模式
 
