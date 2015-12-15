@@ -34,7 +34,7 @@ Action-> Dispatcher -> Store -> Component
 ##Reflux
 结构上与flux架构基本一致，去掉了flux的冗余操作，架构更加简洁和紧凑，用到了一些约定大于配置的理念。
 
-基本上将flux的架构冗余都简化了，可以说是flux的去冗余提升版，但是没有质的变化。
+基本上将flux的架构冗余都简化了，可以说是flux的去冗余提升版，但是没有本质的变化。
 
 1. 更容易的监听。listenables和约定以on开头的方法。等。
 2. 去掉了dispatcher。
@@ -42,7 +42,21 @@ Action-> Dispatcher -> Store -> Component
 4. 去掉了waitfor。store可以监听store。
 5. component提供了一系列mixin，方便注册\卸载到store的监听和与store交互等。
 
-##Redux
+##Redux【重点考察】
+
+优势先不说。。
+
+痛处如下，看能否接受或者解决：
+
+1. redux的原则1：state不能被修改。
+	2. 会产生很多奇怪的代码，很讨厌，比如修改数组的某一项，要新建一个数组，里面是：这项之前+修改后的一项+这项之后。。。。太难理解，如果写错了会产生bug的话，简直无法维护。参考地址：http://camsong.github.io/redux-in-chinese/docs/basics/Reducers.html
+	3. 官方给的建议是：因为我们不能直接修改却要更新数组中指定的一项数据，这里需要先把前面和后面都切开。如果经常需要这类的操作，可以选择使用帮助类 React.addons.update，updeep，或者使用原生支持深度更新的库 Immutable。最后，时刻谨记永远不要在克隆 state 前修改它。
+	4. **解决方案：**暂无啊啊啊。
+4. 单一的庞大的reducer的拆分
+	5. 这块设计也不好做，会让人疑惑
+	6. 官方给的demo中直接按state的内容区分，我觉得这样做不好，如果后期有跨内容的情况，就比较奇怪了。官方给的combineReducers方案，也只是减少代码量，本质没有变化，state还是拆分处理，路由还是业务逻辑自己来做。
+	7. **解决方案**：还是处理一整个state，可以按照约定写reducer类而不是方法，类里按照actionType建方法，架构自动路由并调用。
+	8. 以前做java架构，路由一定是架构来调用的，目前感觉各大flux框架都是解决问题不彻底。
 
 
 ##Relay
@@ -50,6 +64,13 @@ Action-> Dispatcher -> Store -> Component
 
 
 ## 理想情况是？
+
+先说愿景：
+
+1. 组件间交互or共享数据or共享state很容易。
+2. 系统各部分职责清晰，代码可预测、易理解、好维护。
+
+方案：
 
 1. view组件负责展现，他有行为和外观。只通过暴露props来与外界交互。
 2. view组件可以接受用户的操作，并转化为action。
