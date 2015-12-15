@@ -95,7 +95,7 @@ Action-> Dispatcher -> Store -> Component
 
 使用场景：
 
-1. 应用于react native
+1. 目前仅考虑如何应用于react native
 
 
 愿景：
@@ -103,7 +103,7 @@ Action-> Dispatcher -> Store -> Component
 1. 组件间交互or共享数据or共享state很容易。
 2. 系统各部分职责清晰，代码可预测、易理解、好维护。
 	3. 通用组件、业务组件
-	4. 组件的 view state 数据 逻辑 对外props 对外接口等
+	4. 组件的 view state 数据 逻辑 对外props 对外接口 各类异步调用等
 
 方案：
 
