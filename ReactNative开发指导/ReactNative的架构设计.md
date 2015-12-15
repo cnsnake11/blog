@@ -86,6 +86,8 @@ Action-> Dispatcher -> Store -> Component
 
 介于上述两者之间的开源架构reflux，文档较少，不知道器可持续性如何。如果一定要用开源架构的话，他也是一个较为推荐的选择。
 
+不是特复杂的程序【一般spa的程序会更复杂一些，而RN并不是spa】，这些概念只会增加你的开发难度，并且对后面维护的人要求更高。
+
 不使用开源架构，借助其思想，自行封装更简单的架构。
 
 
@@ -109,7 +111,22 @@ Action-> Dispatcher -> Store -> Component
 2. view组件可以接受用户的操作，并转化为action。
 3. action就启动了一次单向数据流。
 
+
+头脑风暴：
+
+1. 目前的flux架构一般都是：view->action->store->view
+2. view从接受到输入，到驱动store去改变，到store通知view去改变，从view接收到view变化绕了这么一大圈，真是脱裤子放屁的感觉
+
 ### 按场景分析
+
+
+
+
+
+
+
+
+
 
 
 
