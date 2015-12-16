@@ -42,7 +42,13 @@ Action-> Dispatcher -> Store -> Component
 4. 去掉了waitfor。store可以监听store。
 5. component提供了一系列mixin，方便注册\卸载到store的监听和与store交互等。
 
-##Redux【重点考察】
+##Redux
+
+社区内比较受推崇，因为用起来相对比较简单
+
+
+![](media/14502335830493.jpg)
+
 
 特性：
 
@@ -114,8 +120,45 @@ Action-> Dispatcher -> Store -> Component
 
 头脑风暴：
 
-1. 目前的flux架构一般都是：view->action->store->view
-2. view从接受到输入，到驱动store去改变，到store通知view去改变，从view接收到view变化绕了这么一大圈，真是脱裤子放屁的感觉
+1. 一般触发view改变的场景-->改变state
+	2. 回调函数触发【异步】
+		2. 组件生命周期事件中or用户操作触发 启动请求服务器
+		3. 组件生命周期事件中or用户操作触发，启动定时任务or注册了其它回调函数【比如交互管理器的动画结束事件】
+	4. 用户操作触发
+		5. view的直接改变【同步】
+		6. 仅仅注册回调函数【异步，参考上面一条】
+1. 目前的flux系列架构一般都是：view【接受输入or生命周期事件】->action->store【改变自己内部的modal】->view【根据modal，自行setState】
+	2. view从接受到输入，到驱动store去改变，到store通知view去改变，从view接收输入到view变化绕了这么一大圈，有种脱裤子放屁的感觉
+	3. 能不能简化？？？flux系列框架究竟想干什么？？？
+1. flux系列框架干了什么，没干什么
+	2. 解耦，分层，谁该干什么就干什么，不许干别的，让代码读起来更有预测性和一致性，方便维护
+	3. 继续解耦，采用事件机制解决各层之间通信
+	4. 并没有解决组件间通信问题
+	5. 并没有解决过程决定组件展现的问题
+3. 通用组件设计
+	4. root组件，只暴露props与外界通信，自己内部自行管理state；
+	5. 子组件是否需要复用
+		6. 需复用，只暴露props，内部自行管理state
+		7. 不需复用，只暴露props，内部无state【因为不会单独使用，不需要setState来触发渲染】
+		8. 一般按照不需复用的情况设计，除非复用很明确，但这时候应该提出去，变成独立的组件存在。
+	1. 去flux化
+		2. view接受到操作or生命周期事件中触发访问服务器操作  
+5. 业务组件、页面设计
+	6. 
+
+
+```flow
+st=>start: 开始
+e=>end: 结束
+op=>operation: 我的操作
+cond=>condition: 确认？
+
+st->op->cond
+cond(yes)->e
+cond(no)->op
+```
+
+
 
 ### 按场景分析
 
