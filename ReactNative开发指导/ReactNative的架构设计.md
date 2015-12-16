@@ -111,9 +111,10 @@ Action-> Dispatcher -> Store -> Component
 
 我们继续头脑风暴，继续抽象总结一下flux系列框架，
 
-1. 目前的flux系列架构一般都是：view【用户输入or生命周期事件触发】->action->store【改变自己内部的modal】->view【根据modal，自行setState】
-	2. view从接受到输入，到驱动store去改变，到store通知view去改变，从view接收输入到view变化绕了这么一大圈，有种脱裤子放屁的感觉
-	3. 能不能简化？？？flux系列框架究竟想干什么？？？
+1. 目前的flux系列架构一般都是：
+	2. view【用户输入or生命周期事件触发】->action->store【改变自己内部的modal】->view【根据modal，自行setState】
+	2. view从接受输入，到驱动store去改变，到store通知view去改变，从view接收输入到view变化绕了这么一大圈，有种脱裤子放屁的感觉
+	3. 能不能简化？？？flux系列框架究竟干了什么？？？
 1. flux系列框架干了什么，没干什么，针对开篇提出的问题。
 	2. 【解决职责】解耦，分层，谁该干什么就干什么，不许干别的，让代码读起来更有预测性和一致性，方便维护
 	3. 【解决职责】继续解耦，采用事件机制解决各层之间通信
