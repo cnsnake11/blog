@@ -151,24 +151,46 @@ Action-> Dispatcher -> Store -> Component
 
 
 
-###根据以上方案，进行通用组件设计
 
-5. 一个独立完整的组件可以分为root组件，子组件
-6. root组件中有
+以上为推导过程，干货才开始。。。。
+
+### 面向对象的ReactNative组件\页面架构设计
+
+5. 一个独立完整的组件\页面一般由以下元素构成
+	1. root组件，1个，
+	1. view子组件，0-n个，
+	1. 业务逻辑对象，0-n个，
+6. root组件，中包含：
 	1. props-公有属性
-	2. state-RN体系的状态
+	2. state-RN体系的状态,必须使用Immutable对象
 	3. 私有属性
+	4. 业务逻辑对象的引用
 	4. 私有方法，子组件可以用
 	5. 公有方法【不推荐】，子组件和外部组件都可以用，但不推荐用公有方法来对外发布功能，破坏了面向状态编程，尽可能的使用props来发布功能
-1. 子组件中有
+1. 子组件，中包含：
 	1. props-公有属性
 	2. 私有属性-如果你不能理解下面的要求，建议没有，统一放在父组件上
 		3. 绝对不允许和父组件的属性or状态有冗余。无论是显性冗余还是计算结果冗余，除非你能确定结算是性能的瓶颈。
 		4. 此属性只有自己会用，父组件和兄弟组件不会使用，如果你不确定这点，请把这个组件放到父组件上，方便组件间通信
 	3. 私有方法
 	4. 公有方法【不推荐，理由同root组件】 
+1. 业务逻辑对象，中包含：
+	2. 构造器
+	2. 私有属性
+	3. 公有方法
+	3. 私有方法
 
-####子组件复用问题
+#### 通用型组件只要求尽量满足上述架构设计
+
+通用型组件一般为不包含任何业务的纯技术组件，具有高复用价值、高定制性、通常不能直接使用需要代码定制等特点。
+
+可以说是一个系统的各个基础零件，比如一个蒙板效果，或者一个模态弹出框。
+
+架构的最终目的是保证系统整体结构良好，代码质量良好，易于维护。一般编写通用型组件的人也是经验较为丰富的工程师，代码质量会有保证。而且，作为零件的通用组件的使用场景和生命周期都和普通组件\页面不同，所以，仅要求通用组件编写尽量满足架构设计即可。
+
+
+
+####view子组件复用问题
 	
 抛出一个问题，设计的过程中，子组件是否需要复用？子组件是否需要复用会影响到组件设计。
 	
@@ -177,8 +199,11 @@ Action-> Dispatcher -> Store -> Component
  
 其实， 一般按照不需复用的情况设计，除非复用很明确，但这时候应该抽出去，变成独立的组件存在就可以了，所以这个问题是不存在的。
 
+
+
+##面向对象的ReactNative架构设计优缺点
 	
-###根据以上方案，进行业务组件、页面设计
+	
 
 
 ## 按场景分析、验证架构设计
@@ -194,7 +219,301 @@ Action-> Dispatcher -> Store -> Component
 
 
 
+##demo代码
 
+此demo仿照redux提供的todolist demo编写。
+
+redux demo 地址：http://camsong.github.io/redux-in-chinese/docs/basics/ExampleTodoList.html
+
+
+demo截图：
+![](media/14503398097842.jpg)
+
+
+
+```
+
+'use strict'
+
+
+let React=require('react-native');
+let Immutable = require('immutable');
+let {
+    AppRegistry,
+    Component,
+    StyleSheet,
+    Text,
+    View,
+    Navigator,
+    TouchableHighlight,
+    TouchableOpacity,
+    Platform,
+    ListView,
+    TextInput,
+    ScrollView,
+    }=React;
+
+//root组件开始-----------------
+
+let  Root =React.createClass({
+
+    //初始化模拟数据，
+    data:[{
+        name:'aaaaa',
+        completed:true,
+    },{
+        name:'bbbbb',
+        completed:false,
+    },{
+        name:'ccccc',
+        completed:false,
+    }
+    ,{
+        name:'ddddd',
+        completed:true,
+    }],
+
+
+    componentWillMount(){
+        this.addTodoObj=new AddTodoObj(this);
+        this.todoListObj=new TodoListObj(this);
+        this.filterObj=new FilterObj(this);
+    },
+
+
+    getInitialState(){
+      return {
+          data:Immutable.fromJS(this.data),//模拟的初始化数据
+          todoName:'',//新任务的text
+          curFilter:'all',//过滤条件 all no ok
+      }
+    },
+
+
+
+    render(){
+        return (
+            <View style={{marginTop:40,flex:1}}>
+
+                <AddTodo todoName={this.state.todoName}
+                        changeText={this.addTodoObj.change.bind(this.addTodoObj)}
+                         pressAdd={this.addTodoObj.press.bind(this.addTodoObj)} />
+
+                <TodoList todos={this.state.data}
+                          onTodoPress={this.todoListObj.pressTodo.bind(this.todoListObj)} />
+
+                <Footer curFilter={this.state.curFilter}
+                    onFilterPress={this.filterObj.filter.bind(this.filterObj)} />
+
+            </View>
+        );
+    },
+
+
+
+});
+
+
+
+
+
+
+//业务逻辑对象开始-------------------------可以使用OO的设计方式设计成多个对象
+
+
+class AddTodoObj{
+
+    constructor(root){
+        this.root=root;
+    }
+
+
+    press(){
+        if(!this.root.state.todoName)return;
+        let list=this.root.state.data;
+        let todo=Immutable.fromJS({name:this.root.state.todoName,completed:false,});
+        this.root.setState({data:list.push(todo),todoName:''});
+    }
+
+    change(e){
+        this.root.setState({todoName:e.nativeEvent.text});
+    }
+
+}
+
+
+class TodoListObj{
+
+    constructor(root){
+        this.root=root;
+    }
+
+
+    pressTodo(todo){
+
+        let data=this.root.state.data;
+
+        let i=data.indexOf(todo);
+
+        let todo2=todo.set('completed',!todo.get('completed'));
+
+        this.root.setState({data:data.set(i,todo2)});
+    }
+}
+
+
+class FilterObj{
+
+    constructor(root){
+        this.root=root;
+    }
+
+
+    filter(type){
+
+        let data=this.root.state.data.toJS();
+        if(type=='all'){
+            data.map((todo)=>{
+                todo.show=true;
+            });
+        }else if(type=='no'){
+            data.map((todo)=>{
+                if(todo.completed)todo.show=false;
+                else todo.show=true;
+             });
+        }else if(type=='ok'){
+            data.map((todo)=>{
+                if(todo.completed)todo.show=true;
+                else todo.show=false;
+            });
+        }
+
+
+        this.root.setState({curFilter:type,data:Immutable.fromJS(data)});
+    }
+
+
+
+}
+
+
+//view子组件开始---------------------------
+
+
+let Footer=React.createClass({
+
+    render(){
+
+        return (
+
+
+            <View style={{flexDirection:'row', justifyContent:'flex-end',marginBottom:10,}}>
+
+                <FooterBtn {...this.props} title='全部' name='all'  cur={this.props.curFilter=='all'?true:false} />
+                <FooterBtn {...this.props} title='未完成' name='no' cur={this.props.curFilter=='no'?true:false} />
+                <FooterBtn {...this.props} title='已完成' name='ok' cur={this.props.curFilter=='ok'?true:false} />
+
+            </View>
+
+
+
+        );
+    },
+
+
+});
+
+
+let FooterBtn=React.createClass({
+
+    render(){
+
+        return (
+
+            <TouchableOpacity onPress={()=>this.props.onFilterPress(this.props.name)}
+                              style={[{padding:10,marginRight:10},this.props.cur?{backgroundColor:'green'}:null]} >
+                <Text style={[this.props.cur?{color:'fff'}:null]}>
+                    {this.props.title}
+                </Text>
+            </TouchableOpacity>
+
+        );
+    },
+
+
+});
+
+
+let AddTodo=React.createClass({
+
+    render(){
+
+        return (
+
+
+            <View style={{flexDirection:'row', alignItems:'center'}}>
+
+
+                <TextInput value={this.props.todoName}
+                    onChange={this.props.changeText}
+                    style={{width:200,height:40,borderWidth:1,borderColor:'e5e5e5',margin:10,}}></TextInput>
+
+
+                <TouchableOpacity onPress={this.props.pressAdd}
+                    style={{backgroundColor:'green',padding:10}} >
+                    <Text style={{color:'fff'}} >
+                        添加任务
+                    </Text>
+                </TouchableOpacity>
+
+            </View>
+
+
+
+        );
+    },
+
+
+});
+
+
+
+let Todo=React.createClass({
+
+    render(){
+        let todo=this.props.todo;
+        return (
+            todo.get("show")!=false?
+            <TouchableOpacity  onPress={()=>this.props.onTodoPress(todo)}
+                style={{padding:10,borderBottomWidth:1,borderBottomColor:'#e5e5e5'}}>
+                <Text style={[todo.get('completed')==true?{textDecorationLine:'line-through',color:'#999'}:null]} >
+                    {todo.get('completed')==true?'已完成   ':'未完成   '} {todo.get('name')}
+                </Text>
+            </TouchableOpacity>
+             :null
+        );
+    },
+
+
+});
+
+
+let TodoList=React.createClass({
+    render(){
+        return (
+            <ScrollView style={{flex:1}}>
+                {this.props.todos.reverse().map((todo, index) => <Todo {...this.props} todo={todo} key={index}  />)}
+            </ScrollView>
+        );
+    },
+});
+
+
+
+
+module.exports=Root;
+
+```
 
 
 
