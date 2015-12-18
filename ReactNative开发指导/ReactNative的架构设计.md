@@ -1,5 +1,6 @@
 # ReactNative的架构设计
 
+
 请注意，本篇写的是react native的架构设计，如果你用react来开发web程序，本篇文章只能仅供参考，问题都没有在web上去考虑过。
 
 本篇较长，前面是目前flux开源框架的一些分析，后面是架构设计过程。您可以直奔主题。
@@ -11,9 +12,7 @@
 1. **交互**：如何解决组件间通信【父子、子父、兄弟等，特别是跨层or反向数据流动等】；用state还是接口操作组件；
 3. **职责**：组件状态放哪，业务逻辑放哪，数据放哪，因为太灵活了，怎么做都可以实现功能，但是怎么做才是最好的，才是最正确的呢？
 
-`
-todo一个问题：由于react是面向状态编程，相当于react的组件只关注数据的最终状态，数据是怎么产生的并不关心，但是某些场景下，数据如何产生的是会影响到组件的一些行为的【比如一个新增行要求有动画效果，查询出的行就不需要等】，这在RN中很难描述。。。。。
-`
+*todo一个问题：由于react是面向状态编程，相当于react的组件只关注数据的最终状态，数据是怎么产生的并不关心，但是某些场景下，数据如何产生的是会影响到组件的一些行为的【比如一个新增行要求有动画效果，查询出的行就不需要等】，这在RN中很难描述。。。。。*
 
 RN架构就是为解决上述问题提供的指导和方法论，是通盘考虑整个开发、测试、运维的状况，做出的考虑最全面的抉择，或者为抉择提供依据。
 
@@ -134,7 +133,7 @@ flux系列架构解决通信问题的方法是使用事件系统，事件系统�
 
 关于2 
 
-解耦确实很彻底，但是当我需要控制执行顺序，需要等a执行完在执行b，怎么办？ok你可以先注册a在注册b啊。那a要是一个fetch或ajax操作呢？这时候只能乖乖的在a的请求结束回调函数中进行调用b了。又变成a依赖b了。当然，你可以继续dispatch(b)，这就没有耦合了。但是你要知道注册一个事件是要有成本的，要写action，而且大部分情况根本就不需要注册多个回调，而且这种dispatch的方式，真的不太适合人类的阅读，dispatch一下，下一步都有谁来执行都不知道，这哪有直接调用来的爽快。
+解耦确实很彻底，但是当我需要控制执行顺序，需要等a执行完在执行b，怎么办？ok你可以先注册a在注册b啊。那a要是一个fetch或ajax操作呢？这时候只能乖乖的在a的请求结束回调函数中进行调用b了。又变成a依赖b了。当然，你可以继续dispatch(b)，这就没有耦合了。但是你要知道注册一个事件是要有成本的，要写action，而且这种dispatch的方式，真的不太适合人类的阅读，dispatch一下，下一步都有谁来执行都不知道，这哪有直接调用来的爽快。
 
 
 好吧说到这，最后的结论也出来了，不使用开源架构，借助其好的思想，替换其事件系统为面向对象结构，自行封装架构。
@@ -149,9 +148,9 @@ flux系列架构解决通信问题的方法是使用事件系统，事件系统�
 ####交互
 1. 组件对外发布：组件对外只允许使用props来暴露功能，不允许使用接口及其它一切方式
 2. 父子组件间：组件的子组件通过父组件传递的接口来与父组件通信
-1. 兄弟组件间：
-	2. 方案1：假设a要调用b，参考第一条的话，其实就是a要改变b的props，那么a只要改b的props的来源即可，b的props的来源一般就是根组件的state。那么根组件就要有组织和协调的能力。
-	3. 方案2：利用事件机制，基本同flux架构。略复杂，且我们并不需要事件的特性，本架构设计不推荐。	
+3. 兄弟组件间:
+	4. 方案1：假设a要调用b，参考第一条的话，其实就是a要改变b的props，那么a只要改b的props的来源即可，b的props的来源一般就是根组件的state。那么根组件就要有组织和协调的能力。
+	5. 方案2：利用事件机制，基本同flux架构。略复杂，且我们并不需要事件的特性，本架构设计不推荐。	
 #### 职责
 
 1. root-存放state，组织子view组件，组织业务逻辑对象等
@@ -166,44 +165,60 @@ flux系列架构解决通信问题的方法是使用事件系统，事件系统�
 
 ### 面向对象的ReactNative组件\页面架构设计
 
-5. 一个独立完整的组件\页面一般由以下元素构成
-	1. root组件，1个，
-		1. 负责初始化state
-		2. 负责提供对外props列表
-		2. 负责组合子view组件形成页面效果
-		3. 负责注册业务逻辑对象提供的业务逻辑方法
-		4. 负责管理业务逻辑对象
-	1. view子组件，0-n个，
-		1. 根据props进行视图的渲染
-	1. 业务逻辑对象，0-n个，
-		2. 提供业务逻辑方法 
-6. root组件，中包含：
-	1. props-公有属性
-	2. state-RN体系的状态,必须使用Immutable对象
-	3. 私有属性
-	4. 业务逻辑对象的引用-在componentWillMount中初始化
-	4. 私有方法-以下划线开头，内部使用or传递给子组件使用
-	5. 公有方法【不推荐】，子组件和外部组件都可以用，但不推荐用公有方法来对外发布功能，破坏了面向状态编程，尽可能的使用props来发布功能
-1. 子view组件，中包含：
-	1. props-公有属性
-	2. 私有属性-如果你不能理解下面的要求，建议没有，统一放在父组件上
-		3. 绝对不允许和父组件的属性or状态有冗余。无论是显性冗余还是计算结果冗余，除非你能确定结算是性能的瓶颈。
-		4. 此属性只有自己会用，父组件和兄弟组件不会使用，如果你不确定这点，请把这个组件放到父组件上，方便组件间通信
-	3. 私有方法-仅作为渲染view的使用，不许有业务逻辑
-	4. 公有方法【不推荐，理由同root组件】 
-1. 业务逻辑对象，中包含：
-	3. root组件对象引用-this.root
-	2. 构造器-初始化root对象，初始化私有属性
-	2. 私有属性
-	3. 公有方法-对外提供业务逻辑
-	3. 私有方法-以下划线开头，内部使用
+ 一个独立完整的组件\页面一般由以下元素构成：
+ 
+1. root组件，1个， 
+	1. 负责初始化state
+	2. 负责提供对外props列表
+	2. 负责组合子view组件形成页面效果
+	3. 负责注册业务逻辑对象提供的业务逻辑方法
+	4. 负责管理业务逻辑对象
+1. view子组件，0-n个，
+	1. 根据props进行视图的渲染
+1. 业务逻辑对象，0-n个，
+	2. 提供业务逻辑方法 
+
+		
+####root组件
+root组件由以下元素组成：
+
+1. props-公有属性
+2. state-RN体系的状态,必须使用Immutable对象
+3. 私有属性
+4. 业务逻辑对象的引用-在componentWillMount中初始化
+4. 私有方法-以下划线开头，内部使用or传递给子组件使用
+5. 公有方法【不推荐】，子组件和外部组件都可以用，但不推荐用公有方法来对外发布功能，破坏了面向状态编程，尽可能的使用props来发布功能
+
+	![屏幕快照 2015-12-18 11.27.34](media/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202015-12-18%2011.27.34.png)
+	
+
+####子view组件
+
+子view组件中包含：
+
+1. props-公有属性
+2. 私有属性-如果你不能理解下面的要求，建议没有，统一放在父组件上
+	3. 绝对不允许和父组件的属性or状态有冗余。无论是显性冗余还是计算结果冗余，除非你能确定结算是性能的瓶颈。
+	4. 此属性只有自己会用，父组件和兄弟组件不会使用，如果你不确定这点，请把这个组件放到父组件上，方便组件间通信
+3. 私有方法-仅作为渲染view的使用，不许有业务逻辑
+4. 公有方法【不推荐，理由同root组件】 
 
 	
 	
-	
-	**todo补充架构图**
+####业务逻辑对象
+业务逻辑对象由以下元素组成：
 
-#### 通用型组件只要求尽量满足上述架构设计
+3. root组件对象引用-this.root
+2. 构造器-初始化root对象，初始化私有属性
+2. 私有属性
+3. 公有方法-对外提供业务逻辑
+3. 私有方法-以下划线开头，内部使用
+
+	
+
+
+	 
+#### ps1：通用型组件只要求尽量满足上述架构设计
 
 通用型组件一般为不包含任何业务的纯技术组件，具有高复用价值、高定制性、通常不能直接使用需要代码定制等特点。
 
@@ -213,19 +228,14 @@ flux系列架构解决通信问题的方法是使用事件系统，事件系统�
 
 
 
-####view子组件复用问题
+####ps2：view子组件复用问题
 	
 抛出一个问题，设计的过程中，子组件是否需要复用？子组件是否需要复用会影响到组件设计。
 	
-6. 需复用，只暴露props，内部自行管理state
+6. 需复用，只暴露props，可以内部自行管理state【尽量避免除非业务需要】
 7. 不需复用，只暴露props，内部无state【因为不会单独使用，不需要setState来触发渲染】
  
 其实， 一般按照不需复用的情况设计，除非复用很明确，但这时候应该抽出去，变成独立的组件存在就可以了，所以这个问题是不存在的。
-
-
-
-##面向对象的ReactNative架构设计优缺点--todo
-	
 	
 
 
@@ -242,7 +252,7 @@ flux系列架构解决通信问题的方法是使用事件系统，事件系统�
 
 
 
-##demo代码
+##完整demo代码
 
 此demo仿照redux提供的todolist demo编写。
 
@@ -254,13 +264,24 @@ demo截图：
 
  
 
+todolist页面：
+
 ```
+
 
 'use strict'
 
 
 let React=require('react-native');
 let Immutable = require('immutable');
+var BbtRN=require('../../../bbt-react-native');
+
+
+var {
+    BaseLogicObj,
+    }=BbtRN;
+
+
 let {
     AppRegistry,
     Component,
@@ -298,12 +319,19 @@ let  Root =React.createClass({
 
 
     componentWillMount(){
+
+        //初始化业务逻辑对象
         this.addTodoObj=new AddTodoObj(this);
         this.todoListObj=new TodoListObj(this);
         this.filterObj=new FilterObj(this);
+
+        //下面可以继续做一些组件初始化动作，比如请求数据等.
+        //当然了这些动作最好是业务逻辑对象提供的，这样root组件将非常干净.
+        //例如这样：this.todoListObj.queryData();
     },
 
 
+    //状态初始化
     getInitialState(){
       return {
           data:Immutable.fromJS(this.data),//模拟的初始化数据
@@ -314,7 +342,9 @@ let  Root =React.createClass({
 
 
 
+    //这里组合子view组件 并 注册业务逻辑对象提供的方法到各个子view组件上
     render(){
+
         return (
             <View style={{marginTop:40,flex:1}}>
 
@@ -343,58 +373,48 @@ let  Root =React.createClass({
 
 //业务逻辑对象开始-------------------------可以使用OO的设计方式设计成多个对象
 
-
-class AddTodoObj{
-
-    constructor(root){
-        this.root=root;
-    }
-
+//业务逻辑对象要符合命名规范：以Obj结尾
+//BaseLogicObj是架构提供的基类，里面封装了构造器和一些常用取值函数
+class AddTodoObj extends BaseLogicObj{
 
     press(){
-        if(!this.root.state.todoName)return;
-        let list=this.root.state.data;
-        let todo=Immutable.fromJS({name:this.root.state.todoName,completed:false,});
-        this.root.setState({data:list.push(todo),todoName:''});
+        if(!this.getState().todoName)return;
+        let list=this.getState().data;
+        let todo=Immutable.fromJS({name:this.getState().todoName,completed:false,});
+        this.setState({data:list.push(todo),todoName:''});
     }
 
     change(e){
-        this.root.setState({todoName:e.nativeEvent.text});
+        this.setState({todoName:e.nativeEvent.text});
     }
 
 }
 
 
-class TodoListObj{
+class TodoListObj extends BaseLogicObj {
 
-    constructor(root){
-        this.root=root;
-    }
+
 
 
     pressTodo(todo){
 
-        let data=this.root.state.data;
+        let data=this.getState().data;
 
         let i=data.indexOf(todo);
 
         let todo2=todo.set('completed',!todo.get('completed'));
 
-        this.root.setState({data:data.set(i,todo2)});
+        this.setState({data:data.set(i,todo2)});
     }
 }
 
 
-class FilterObj{
-
-    constructor(root){
-        this.root=root;
-    }
+class FilterObj extends BaseLogicObj {
 
 
     filter(type){
 
-        let data=this.root.state.data.toJS();
+        let data=this.getState().data.toJS();
         if(type=='all'){
             data.map((todo)=>{
                 todo.show=true;
@@ -412,7 +432,7 @@ class FilterObj{
         }
 
 
-        this.root.setState({curFilter:type,data:Immutable.fromJS(data)});
+        this.setState({curFilter:type,data:Immutable.fromJS(data)});
     }
 
 
@@ -423,6 +443,7 @@ class FilterObj{
 //view子组件开始---------------------------
 
 
+//子view对象中仅仅关注：从this.props转化成view
 let Footer=React.createClass({
 
     render(){
@@ -536,12 +557,46 @@ let TodoList=React.createClass({
 
 module.exports=Root;
 
+
+```
+
+BaseLogicObj:
+
 ```
 
 
+'use strict'
+
+class BaseLogicObj{
 
 
+    constructor(root){
+        if(!root){
+            console.error('实例化BaseLogicObj必须传入root组件对象.');
+        }
+        this.root=root;
+    }
 
+    getState(){
+        return this.root.state;
+    }
 
+    setState(s){
+        this.root.setState(s);
+    }
+
+    getRefs(){
+        return this.root.refs;
+    }
+
+    getProps(){
+        return this.root.props;
+    }
+
+}
+
+module.exports=BaseLogicObj;
+
+```
 
 
