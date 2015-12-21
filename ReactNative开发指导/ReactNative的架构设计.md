@@ -1,4 +1,4 @@
-# ReactNative的架构设计
+# ReactNative的组件架构设计
 
 
 请注意，本篇写的是react native的架构设计，如果你用react来开发web程序，本篇文章只能仅供参考，问题都没有在web上去考虑过。
