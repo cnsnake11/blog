@@ -1,6 +1,8 @@
 # ReactNative组件状态设计思考
 
 
+这篇文章写的较早，是刚接触RN的时候进行的思考总结，是一个分析的过程，您还可以参考思想更成熟一点的这篇：RN组件架构设计：http://segmentfault.com/a/1190000004161358
+
 设计React组件与设计一个jquery组件或者一个原生js组件最大的区别就是状态的设计。
 
 ##术语定义
@@ -123,7 +125,7 @@ RN号称diff算法性能很高，但也不是0损耗，如果对RN的渲染理�
 	1. 是否会随着时间改变？如果不是，可能不是 state 。
 	1. 能根据组件中其它 state 数据或者 props 计算出来吗？如果是，就不是 state 。
 2. 根据state的特点进行识别，加入到上一条
-	3. 哪些属性的改变会影响到view的变化  
+	3. 属性的改变会影响到view的变化就可能是state
 2. 参考地址
 	3. https://facebook.github.io/react/docs/thinking-in-react.html
 	4. http://wiki.jikexueyuan.com/project/react/thinking-in-react.html
