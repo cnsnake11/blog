@@ -70,9 +70,10 @@ navigator
 参考地址：https://github.com/cnsnake11/blog/blob/master/ReactNative翻译/react-native的定时器.md
 
 #调试
-console
+console.log()
 
-断点
+在chrome中调试js
+
 #Immutable.js
 
 
