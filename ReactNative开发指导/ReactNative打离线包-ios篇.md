@@ -1,8 +1,8 @@
-# ReactNative离线打包
+# ReactNative打离线包-ios篇
 
-参考地址-文档很旧：<http://facebook.github.io/react-native/docs/running-on-device-ios.html#content>
+官方文档，内容很旧：<http://facebook.github.io/react-native/docs/running-on-device-ios.html#content>
 
-安卓打包：<https://github.com/facebook/react-native/issues/2743#issuecomment-140697340>
+相关链接：<https://github.com/facebook/react-native/issues/4084>
 
 #打包命令说明
 
@@ -35,7 +35,7 @@ Options:
 
  
 #ios打包步骤
-1. 在工程根目录下执行打包命令，比如react-native bundle --entry-file demo/index.js --bundle-output ./ios/bundle/index.ios.jsbundle --platform ios --assets-dest ./ios/bundle --dev false，请参考上面命令说明，根据自己的情况进行修改再执行。
+1. 在工程根目录下执行打包命令，比如react-native bundle --entry-file demo/index.js --bundle-output ./ios/bundle/index.ios.jsbundle --platform ios --assets-dest ./ios/bundle --dev false，请参考上面命令说明，根据自己的情况进行修改再执行。注意要先保证bundle存在。
 2. 命令执行完生成如下资源 ![2015-12-23 17.41.04](media/2015-12-23%2017.41.04.png)
 
 
@@ -50,4 +50,5 @@ Options:
 1. 离线包如果开启了chrome调试，会访问调试服务器，而且会一直loading出不来。 
 2. 如果bundle的名字是main.jsbundle,app会一直读取旧的,改名就好了。。。非常奇葩的问题，我重新删了app，clean工程都没用，就是不能用main.jsbundle这个名字。
 3. 必须用Create folder references【蓝色文件夹图标】的方式引入图片的assets，否则引用不到图片
+4. 执行bundle命令之前，要保证相关的目录都存在
 
