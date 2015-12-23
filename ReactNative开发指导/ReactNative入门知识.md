@@ -20,6 +20,8 @@ import export
 
 参考地址：http://facebook.github.io/react-native/docs/javascript-environment.html#content
 
+参考地址：http://www.ghugo.com/react-native-es6/
+
 #Flow
 
 
