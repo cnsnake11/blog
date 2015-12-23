@@ -1,4 +1,4 @@
-#淘宝d2分享-ReactNative变革无线前端-图多请用wifi
+#淘宝d2分享-ReactNative变革无线前端
 
 
 # ![1](media/1.jpeg)
