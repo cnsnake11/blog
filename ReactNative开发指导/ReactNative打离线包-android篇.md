@@ -45,4 +45,11 @@ Options:
 
 
 
+#To disable the developer menu for production builds:
+
+For iOS open your project in Xcode and select Product → Scheme → Edit Scheme... (or press ⌘ + <). Next, select Run from the menu on the left and change the Build Configuration to Release.
+
+
+For Android, by default, developer menu will be disabled in release builds done by gradle (e.g with gradle assembleRelease task). Although this behavior can be customized by passing proper value to ReactInstanceManager#setUseDeveloperSupport.
+
 

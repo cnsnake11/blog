@@ -6,6 +6,9 @@
 
 离线包就是把RN和你写的js图片等资源都打包放入app，不需要走网络下载。
 
+
+
+
 #打包命令说明
 
 react-native bundle
@@ -53,4 +56,12 @@ Options:
 2. 如果bundle的名字是main.jsbundle,app会一直读取旧的,改名就好了。。。非常奇葩的问题，我重新删了app，clean工程都没用，就是不能用main.jsbundle这个名字。
 3. 必须用Create folder references【蓝色文件夹图标】的方式引入图片的assets，否则引用不到图片
 4. 执行bundle命令之前，要保证相关的文件夹都存在
+
+
+#To disable the developer menu for production builds:
+
+For iOS open your project in Xcode and select Product → Scheme → Edit Scheme... (or press ⌘ + <). Next, select Run from the menu on the left and change the Build Configuration to Release.
+
+
+For Android, by default, developer menu will be disabled in release builds done by gradle (e.g with gradle assembleRelease task). Although this behavior can be customized by passing proper value to ReactInstanceManager#setUseDeveloperSupport.
 
