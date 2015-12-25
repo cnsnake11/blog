@@ -32,4 +32,6 @@
 	24. 【这个特性理解的好像不对，有空测试一下】的基础下，尽量只改变本应该改变的组件的state的状态值
 1. 在基类BaseLogicObj的构造器中对对象的所有方法进行代理-todo待验证
 2. gradle
+3. graphql
+4. 编码规范重构，参考：https://github.com/sunnylqm/react-native-coding-style
 

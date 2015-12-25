@@ -17,7 +17,7 @@ While the service is in beta, we don’t recommend using it for doing production
 
 通过CodePush服务器进行升级。
 
-**todo能否用自己的服务器？**
+服务端目前没有开源，不能用自己的服务器
 
 原生代码的改动是不能通过codepush升级的。
 
@@ -54,4 +54,12 @@ Android (asset support coming soon!)
 
 
 
+#源码阅读记录
+1. js版本同时需要考虑对app版本的依赖问题，例如，js1.0版本必须运行在iosApp2.0，安卓app2.6上等。
+2. 提供了一系列js接口，方便应用更细节的控制升级的过程。
+3. 对于assets中的图片内容，可以自动计算与上一版本的差别，只下载增量部分。
+4. 如果app升级了，js应自动使用app中版本。todo一个升级算法状态图。
+4. 客户端应有2部分组件-codepush文档很详细，可以参考
+	1. native部分，安卓和ios分别提供启动时bundle资源位置的服务
+	2. js部分，提供对更新和下载的细粒度控制接口.
 
