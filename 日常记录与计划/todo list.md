@@ -34,4 +34,5 @@
 2. gradle
 3. graphql
 4. 编码规范重构，参考：https://github.com/sunnylqm/react-native-coding-style
+5. className react 的 插件
 
