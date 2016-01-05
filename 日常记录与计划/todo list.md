@@ -35,4 +35,5 @@
 3. graphql
 4. 编码规范重构，参考：https://github.com/sunnylqm/react-native-coding-style
 5. className react 的 插件
+6. listviewbindwithurl在unmount方法中停止组件，避免warniing
 
