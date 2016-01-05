@@ -1,4 +1,4 @@
-# 已有工程集成ReactNaitve-IOS
+# 已有工程集成ReactNative-IOS
 
 以下步骤为手动添加的方式，使用rnpm的方式请参考官方文档。
 
