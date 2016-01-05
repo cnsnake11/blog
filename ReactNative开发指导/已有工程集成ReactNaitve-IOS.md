@@ -48,7 +48,7 @@ node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj
 ![](media/14519906182589.jpg)
 
 
-注意：React.xcodeproj是需要注册的。
+注意：React.xcodeproj是需要注册的。下面的目录要改成自己的目录。
 
 $(SRCROOT)/RN/node_modules/react-native/React  
 
