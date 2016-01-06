@@ -206,7 +206,8 @@ root组件由以下元素组成：
 3. 私有方法-仅作为渲染view的使用，不许有业务逻辑
 4. 公有方法【不推荐，理由同root组件】 
 
-	![vie](media/view.png)
+![gsddfa](media/gsddfa.png)
+
 
 	
 
@@ -221,7 +222,8 @@ root组件由以下元素组成：
 3. 私有方法-以下划线开头，内部使用
 
 	
-![323123](media/323123.png)
+![dafa](media/dafa.png)
+
 
 
 	 
