@@ -36,4 +36,7 @@
 4. 编码规范重构，参考：https://github.com/sunnylqm/react-native-coding-style
 5. className react 的 插件
 6. listviewbindwithurl在unmount方法中停止组件，避免warniing
+7. eslint集成
+	8. 规则配置梳理---ok
+	9. 集成到rn脚本中or单独定义脚本
 
