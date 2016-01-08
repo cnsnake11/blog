@@ -1,31 +1,30 @@
 # todo list
-1. **相对路径的图片，是否是从服务器下载的，如何做到下载一次就就不用下载了，脱离服务器**
+1. 相对路径的图片，是否是从服务器下载的，如何做到下载一次就就不用下载了，脱离服务器 ok
 	2. 应该是相对这个生成的js的某个文件夹会存，和js一起打包到app中即可，待验证
-2. **高宽未知的图片的应用方案。**
-1. **初步了解不可变数据框架**ok
-2. 初步了解mixin
+2. 高宽未知的图片的应用方案。 ok：0.18.0中提供了ios的解决方案
+1. 初步了解不可变数据框架 ok
+2. 初步了解mixin ok：已经不推荐使用
 2. 将通用组件提交到npm中
-1. 重构使用react提供的propTypes，而不是options，并更新文档;重构propsConcat，只校验，不赋值，使用...this.props的方式赋值。这样不好，一些没用的也会赋值上去，要找一个好的解决方案;
-2. 使用RN组件规范的displayName代替自定义的_compName;
+1. 重构使用react提供的propTypes，而不是options，并更新文档;重构propsConcat，只校验，不赋值，使用...this.props的方式赋值。这样不好，一些没用的也会赋值上去，要找一个好的解决方案; ok
+2. 使用RN组件规范的displayName代替自定义的_compName; ok
 2. 搜索历史的存储和展现
 5. listview的下拉刷新
 6. detail页面的上拉查看详情
-6. **RN的mvc开发框架flux**ok
+6. RN的mvc开发框架flux ok
 7. RN动画与CSS3动画的异同
-8. **RN中cookie的使用与测试**
-9. filder的使用推广
-10. fetch是否需要封装
+9. filder的使用推广，mac中没有，找找类似的
+10. fetch是否需要封装 
 11. 校验的封装
-12. **第三方开发组件的集成规范和方案**
-13. 组件间通信的封装
+12. 第三方开发组件的集成规范和方案
+13. 组件间通信的封装 ok
 	14. http://www.ghugo.com/react-native-communicate/
 	15. http://www.ghugo.com/react-native-event-emitter/
-16. 面向状态设计还是面向接口设计的思考
+16. 面向状态设计还是面向接口设计的思考 ok
 	17. 尽量沿用RN思想，面向状态设计，参考modal组件
 17. 文档采用代码即文档的模式
-18. 因为css里没有选择器，给css起名字很痛苦，有没有好办法
-19. **原生在调用一个rn页面时候，如何给rn页面传递参数？**
-20. ReactNative的组件状态对渲染范围的影响.todo待测试
+18. 因为css里没有选择器，给css起名字很痛苦，有没有好办法 ok：尽量使用inline样式
+19. 原生在调用一个rn页面时候，如何给rn页面传递参数？ ok：官方提供方法
+20. ReactNative的组件状态对渲染范围的影响.todo待测试 ok：不仅仅影响自身
 	21. //todo 思考：再封装一个按钮的组件，自己来存自己是否选中的状态；
 	22. //todo 但是此组件如何与自己的兄弟组件进行交互呢？点击此此组件要消除到其它已选的组件。
 	23. //兄弟组件间通信，肯定要借助父组件进行，在理解RN特性【state的改变只影响自己和自己的子组件的渲染】
@@ -33,10 +32,17 @@
 1. 在基类BaseLogicObj的构造器中对对象的所有方法进行代理-todo待验证
 2. gradle
 3. graphql
-4. 编码规范重构，参考：https://github.com/sunnylqm/react-native-coding-style
+4. 编码规范重构，参考：https://github.com/sunnylqm/react-native-coding-style ok
 5. className react 的 插件
 6. listviewbindwithurl在unmount方法中停止组件，避免warniing
 7. eslint集成
 	8. 规则配置梳理---ok
 	9. 集成到rn脚本中or单独定义脚本
+2. **codepush客户端源码研究**
+1. **RN中cookie的使用与测试**
+1. **页面再次展现出来的事件,类似安卓的onResume**
+3. **安卓studio工程的搭建**
+4. **fetch还是需要封装一层，方便监控、mock等操作**
+
+
 
