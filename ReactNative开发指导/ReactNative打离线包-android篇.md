@@ -39,7 +39,9 @@ Options:
 #安卓打包步骤
 
 1. 在工程根目录下执行打包命令，比如``` react-native bundle --entry-file demo/index.js --bundle-output ./android/app/src/main/assets/index.android.jsbundle --platform android --assets-dest ./android/app/src/main/res/ --dev false ```请参考上面命令说明，根据自己的情况进行修改再执行。注意要先保证[./android/app/src/main/assets/]文件夹存在。
+2. ps:增量升级的话不要把图片资源直接打包到res中，脚本如下：```  react-native bundle --entry-file demo/index.js --bundle-output ./bundle/androidBundle/index.android.jsbundle --platform android --assets-dest ./bundle/androidBundle --dev false  ```
 1. 命令执行完生成资源如图![2015-12-24 11.05.31](media/2015-12-24%2011.05.31.png)
+
 1. 保证MainActivity.java中的setBundleAssetName与你的jsbundle文件名一致，比如`.setBundleAssetName("index.android.jsbundle")`就与我生成的资源名一致
 2. 一切OK 打包测试吧
 

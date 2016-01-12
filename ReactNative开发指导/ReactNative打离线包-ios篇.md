@@ -40,8 +40,10 @@ Options:
 
  
 #ios打包步骤
-1. 在工程根目录下执行打包命令，比如``` react-native bundle --entry-file demo/index.js --bundle-output ./ios/bundle/index.ios.jsbundle --platform ios --assets-dest ./ios/bundle --dev false ```请参考上面命令说明，根据自己的情况进行修改再执行。注意要先保证bundle文件夹存在。
-2. 命令执行完生成如下资源 ![2015-12-23 17.41.04](media/2015-12-23%2017.41.04.png)
+1. 在工程根目录下执行打包命令，比如``` react-native bundle --entry-file demo/index.js --bundle-output ./bundle/iosBundle/index.ios.jsbundle --platform ios --assets-dest ./bundle/iosBundle --dev false ```请参考上面命令说明，根据自己的情况进行修改再执行。注意要先保证bundle文件夹存在。
+2. 命令执行完生成如下资源 ![323424sf](media/323424sf-1.png)
+
+
 
 
 2. 在xcode中添加assets【必须用Create folder references的方式，添加完是蓝色文件夹图标】和index.ios.jsbundle，如图![2015-12-23 17.35.50](media/2015-12-23%2017.35.50.png)
