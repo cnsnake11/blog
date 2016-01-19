@@ -52,7 +52,20 @@ this.refs['DRAWER_REF'] will only be accessible from the component that renders
 ####此问题还需要思考更好的解决方案
 
 ##经过各种测试，终于找到了一个隐藏组件的好办法
-todo
+
+
+```
+/**
+* 隐藏
+*/
+hidden:{
+  position:'absolute',
+  left:-9999,
+  height:10, //加高是为了解决listview不停触发底部滚动事件的
+  width:10,  //加宽是为了解决viewpager隐藏时候，ios会崩溃的问题
+},
+        
+```
 
 
 
@@ -188,6 +201,8 @@ Invariant Violation: Element type is invalid: expected a string (for built-in co
 
 ##安卓中dimensions获得window的高不准，差了20左右，
 华为p8
+
+https://github.com/facebook/react-native/issues/4934
 
 
 
