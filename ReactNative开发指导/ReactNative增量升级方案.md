@@ -67,6 +67,15 @@ google开源库地址：https://github.com/bystep15/google-diff-match-patch
 
 codepush地址：http://microsoft.github.io/code-push/
 
+#bundle要求的app最小版本
+
+本文中一般用min-v或者appMinV表示。
+
+因为js代码是依赖于native代码的，所以，jsbundle对app的版本有要求，所以有这个概念。
+
+试想，如果bundle依赖了一个native的一个新的接口，这个接口在v3版本的app中才发布，如果v2版本的app升级了这个bundle，那么必然会报错，严重的可能会导致app的崩溃。
+
+
 #系统结构设计与各模块职责
 ![312313123](media/312313123.png)
 
