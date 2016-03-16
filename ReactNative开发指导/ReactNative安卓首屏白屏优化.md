@@ -233,7 +233,7 @@ protected void onCreate(Bundle savedInstanceState) {
 ```
 
 
-onDestroy方法中，不能再调用原有的mReactInstanceManager.destroy()方法了，否则rn初始化出来的对象会被销毁，下次就用不了了。同时，要写在掉rootview的parent对象，否则下次再setContentView时候回报错。
+onDestroy方法中，不能再调用原有的mReactInstanceManager.destroy()方法了，否则rn初始化出来的对象会被销毁，下次就用不了了。同时，要卸载掉rootview的parent对象，否则下次再setContentView时候回报错。
 
 ```
 protected void onDestroy() {
