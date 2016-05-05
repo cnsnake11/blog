@@ -88,8 +88,10 @@ class button{
 <div id='a'></div>
 
 //实例化组件并使用
-new button(false,'a');
+var btn = new button(false,'a');
 
+//调用btn提供的方法，此时会触发onEnable事件
+btn.enable();
 ```
 
 ##RN设计思路
