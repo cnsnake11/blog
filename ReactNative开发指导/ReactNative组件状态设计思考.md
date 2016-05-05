@@ -50,6 +50,7 @@ class button{
 		this.pid=pid;//属性：父容器的id
 		
 		this._disable=null,//状态:私有属性
+		this._el=null,//对html节点的引用，私有属性
 
 		if(this.disable==true){//根据属性来决定初始化状态
 			this.disable();
@@ -62,13 +63,13 @@ class button{
 	
 	enable(){
 		this._disable=false;
-		if(this.el)this.el.set('disable',false);
+		if(this._el)this._el.set('disable',false);
 		this.fireEvent('onEnable');//触发事件
 	}
 	
 	disable(){
 		this._disable=true;
-		if(this.el)this.el.set('disable',true);
+		if(this._el)this._el.set('disable',true);
 		this.fireEvent('onDisable');//触发事件
 	}
 	
@@ -78,7 +79,7 @@ class button{
 		$(this.pid).innerHTML='<button disable='+this._disable+' />';
 		
 		//初始化对dom节点的引用
-		this.el=$(this.pid).getChild();
+		this._el=$(this.pid).getChild();
 	}
 	
 }
