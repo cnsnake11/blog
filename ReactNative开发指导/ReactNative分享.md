@@ -16,7 +16,7 @@ facebook2015年发布。社区关注度非常高。版本迭代很快，基本�
 
 # 安卓demo包下载
 
-[RnDemo.apk,9MB](https://raw.githubusercontent.com/cnsnake11/blog/master/ReactNative%E5%BC%80%E5%8F%91%E6%8C%87%E5%AF%BC/media/RnDemo.apk)
+[RnDemo.apk,9MB](http://pan.baidu.com/s/1mhX6VoO)
 
 
 # 优势
