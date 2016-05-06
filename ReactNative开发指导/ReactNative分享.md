@@ -10,13 +10,12 @@
 
 # reactnative是个啥
 
-用js写原生app的开源框架，目前支持ios和android。
+用js写原生app的开源框架，目前官方支持ios和android。
 
-facebook2015年发布并且开源的。社区关注度非常高。版本迭代很快，基本上2周左右一个版本。
+facebook2015年发布。社区关注度非常高。版本迭代很快，基本上2周左右一个版本。
 
 # 安卓demo包下载
 
-[孕育问答rn版，28Mb](media/pregnancy-v2_6.7.0-beta2_babytree.apk)
 
 # 优势
 
