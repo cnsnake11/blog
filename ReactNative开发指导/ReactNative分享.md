@@ -157,11 +157,31 @@ reactnative
 android、ios操作系统
 ```
 
-
 # 框架设计
+
+参考技术框架和业务框架的目录结构介绍。
 
 # 版本发布
 
-# 原生开发
+## 全量发布
 
+全量发布是将rn相关资源打包进app中，是无需网络下载的。
+
+一般过程：
+
+1. coding结束
+2. 使用全量打包命令，打出android和ios全量包
+3. 将包拷贝到android和ios工程约定好的位置
+4. 按照android和ios原有打包方式进行打包即可
+
+## 增量发布
+
+[增量升级方案](https://github.com/cnsnake11/blog/blob/master/ReactNative%E5%BC%80%E5%8F%91%E6%8C%87%E5%AF%BC/ReactNative%E5%A2%9E%E9%87%8F%E5%8D%87%E7%BA%A7%E6%96%B9%E6%A1%88.md)
+
+一般过程：
+
+1. coding结束
+2. 使用全量打包命令，打出android和ios全量包
+3. 使用增量打包命令，打出android和ios增量包
+4. 将增量包上传到后台管理系统，上线即可
 
