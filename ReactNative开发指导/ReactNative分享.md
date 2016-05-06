@@ -8,15 +8,19 @@
 3. 学习组件化的思想及其好处，目标是能运用到工作中
 4. 希望随时打断进行交流讨论
 
-# 开场
-
-## reactnative是个啥
+# reactnative是个啥
 
 用js写原生app的开源框架，目前支持ios和android。
 
-## 优势
+facebook2015年发布并且开源的。社区关注度非常高。版本迭代很快，基本上2周左右一个版本。
 
-### 开发体验
+# 安卓demo包下载
+
+[孕育问答rn版，28Mb](media/pregnancy-v2_6.7.0-beta2_babytree.apk)
+
+# 优势
+
+## 开发体验
 	
 1. 改代码，即时编译，即时加载
 1. 兼容性好，代码可预测，各系统的模拟器、各型号的真机基本无差异
@@ -32,12 +36,12 @@
 	1. fetch
 	2. 等
 
-### 用户体验
+## 用户体验
 1. 加载性能好，无白屏
 2. 动画性能好，无卡顿
 2. 顺畅的手势操作
 
-## 劣势
+# 劣势
 1. 无web版，分享页等还要开发,react-web目前还不成熟
 1. 无选择器的概念，定义样式很繁琐,通过开发规范部分解决
 1. 尚未发布1.0
@@ -98,16 +102,32 @@ js中的xml。[例子](http://facebook.github.io/react/)
 
 # 开发环境
 
-此处演示基本的开发过程，给予直观的感受。
-
 ## ios
 
-xcode+app的ios代码+js编辑器+rn调试服务器
+xcode+app的ios代码+js编辑器+rn开发服务器+真机or模拟器
 
 ## android
 
-jdk+androidSdk+androidStudio+app的android代码+js编辑器+rn调试服务器
+jdk+androidSdk+androidStudio+app的android代码+js编辑器+rn开发服务器+真机or模拟器
 
+# 开发过程
+
+1. 启动rn开发服务器
+2. 启动模拟器，点开app，设置自动reload
+3. 启动js代码编辑器，coding---save---看效果
+4. tips:可以直接让首页显示你要开发的页面，可以快速查看效果
+
+```
+// tips用到的代码，替换index页面的最后一行
+AppRegistry.registerComponent('Ask', () => require('../../../demo/demo1/animate/drag2'));
+```
+
+# 调试过程
+
+1. console.log
+2. js断点调试
+3. alert
+3. 页面元素检测器
 
 # 组件设计
 [链接](https://github.com/cnsnake11/blog/blob/master/ReactNative%E5%BC%80%E5%8F%91%E6%8C%87%E5%AF%BC/ReactNative%E7%9A%84%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1.md)
