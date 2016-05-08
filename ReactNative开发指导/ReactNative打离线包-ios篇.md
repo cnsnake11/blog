@@ -6,8 +6,8 @@
 
 离线包就是把RN和你写的js图片等资源都打包放入app，不需要走网络下载。
 
-
-
+升级服务器的使用方法：
+在mobile-rn/bbt-rn-update-server目录中，执行命令npm start，然后访问http://localhost:3000/
 
 #打包命令说明
 
