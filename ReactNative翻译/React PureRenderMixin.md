@@ -1,6 +1,6 @@
 # React PureRenderMixin
 
-原文地址：https://facebook.github.io/react/docs/pure-render-mixin.html
+英文原文地址：https://facebook.github.io/react/docs/pure-render-mixin.html
 
 If your React component's render function is "pure" (in other words, it renders the same result given the same props and state), you can use this mixin for a performance boost in some cases.
 

@@ -1,6 +1,6 @@
 # React Advanced Performance 性能进阶 - 未翻译完
 
-原文地址：https://facebook.github.io/react/docs/advanced-performance.html
+英文原文地址：https://facebook.github.io/react/docs/advanced-performance.html
 
 One of the first questions people ask when considering React for a project is whether their application will be as fast and responsive as an equivalent non-React version. The idea of re-rendering an entire subtree of components in response to every state change makes people wonder whether this process negatively impacts performance. React uses several clever techniques to minimize the number of costly DOM operations required to update the UI.
 
@@ -75,9 +75,15 @@ In the example above, since shouldComponentUpdate returned false for the subtree
 
 For C1 and C3 shouldComponentUpdate returned true, so React had to go down to the leaves and check them. For C6 it returned true; since the virtual DOMs weren't equivalent it had to reconcile the DOM. The last interesting case is C8. For this node React had to compute the virtual DOM, but since it was equal to the old one, it didn't have to reconcile it's DOM.
 
+当shouldComponentUpdate返回true就像c1和c3，react会继续询问他们的子组件的shouldComponentUpdate。c6返回了true，同时c6的虚拟dom和真实dom不一致，所以c6执行了真实dom增量修改操作。c8比较有趣，它的真实dom和虚拟dom节点是相等的，所以他不会执行真实dom增量修改动作。
+
 Note that React only had to do DOM mutations for C6, which was inevitable. For C8, it bailed out by comparing the virtual DOMs, and for C2's subtree and C7, it didn't even have to compute the virtual DOM as we bailed out on shouldComponentUpdate.
 
+上述例子中，真正执行了真实dom修改动作的只有c6；c8执行了真实dom和虚拟dom比较的动作；c2和c7因为他们shouldComponentUpdate返回了false，他们甚至都没有进行虚拟dom的计算。
+
 So, how should we implement shouldComponentUpdate? Say that you have a component that just renders a string value:
+
+综上，该如何实现shouldComponentUpdate方法呢？假如写一个显示一个字符串的组件。
 
 ```
 React.createClass({
@@ -92,6 +98,7 @@ React.createClass({
 ```
 
 We could easily implement shouldComponentUpdate as follows:
+shouldComponentUpdate如下：
 
 ```
 shouldComponentUpdate: function(nextProps, nextState) {
@@ -101,7 +108,11 @@ shouldComponentUpdate: function(nextProps, nextState) {
 
 So far so good, dealing with such simple props/state structures is easy. We could even generalize an implementation based on shallow equality and mix it into components. In fact, React already provides such implementation: PureRenderMixin.
 
+针对简单数据结构的props/state很容易。我们可以实现一个通用的方法来针对简单数据类型进行比对工作。并且react已经实现好了：PureRenderMixin。
+
 But what if your components' props or state are mutable data structures? Say the prop the component receives, instead of being a string like 'bar', is a JavaScript object that contains a string such as, { foo: 'bar' }:
+
+当props和state是复杂数据类型该如何处理呢?假如上个组件要显示的字符串使用了一个js对象中的一个属性，例如{ foo: 'bar' }。
 
 ```
 React.createClass({
@@ -117,14 +128,18 @@ React.createClass({
 
 The implementation of shouldComponentUpdate we had before wouldn't always work as expected:
 
+我们之前实现的shouldComponentUpdate将不会发生作用。
+
 ```
 // assume this.props.value is { foo: 'bar' }
 // assume nextProps.value is { foo: 'bar' },
-// but this reference is different to this.props.value
+// but this reference is different to this.props.value 因为引用不同，所以不相等
 this.props.value !== nextProps.value; // true
 ```
 
 The problem is shouldComponentUpdate will return true when the prop actually didn't change. To fix this, we could come up with this alternative implementation:
+
+上面例子里props没有改变shouldComponentUpdate也返回了true，我们换一种实现方式如下：
 
 ```
 shouldComponentUpdate: function(nextProps, nextState) {
@@ -133,6 +148,8 @@ shouldComponentUpdate: function(nextProps, nextState) {
 ```
 
 Basically, we ended up doing a deep comparison to make sure we properly track changes. In terms of performance, this approach is pretty expensive. It doesn't scale as we would have to write different deep equality code for each model. On top of that, it might not even work if we don't carefully manage object references. Say this component is used by a parent:
+
+
 
 ```
 React.createClass({

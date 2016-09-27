@@ -1,6 +1,6 @@
 # React Shallow Compare
 
-原文地址：https://facebook.github.io/react/docs/shallow-compare.html
+英文原文地址：https://facebook.github.io/react/docs/shallow-compare.html
 
 shallowCompare is a helper function to achieve the same functionality as PureRenderMixin while using ES6 classes with React.
 

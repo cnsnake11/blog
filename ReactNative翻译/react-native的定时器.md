@@ -1,6 +1,6 @@
 # 定时器 Timers 
 
-原文地址：http://facebook.github.io/react-native/docs/timers.html
+英文原文地址：http://facebook.github.io/react-native/docs/timers.html
 
 定时器是应用程序的重要组件，ReactNative实现了浏览器的定时器。
 

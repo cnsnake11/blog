@@ -1,6 +1,6 @@
 # react-native的性能
 
-原文地址： http://facebook.github.io/react-native/docs/performance.html
+英文原文地址： http://facebook.github.io/react-native/docs/performance.html
 
 使用react native 代替webview技术来构建app最大的理由就是60FPS流畅的体验。我们尽可能的让开发者可以专注于app开发而不是性能优化，但是目前RN还不能完全的达到此目标，并不能自动选择最优的方式，所以，还需要开发者关注并进行调整。
 
