@@ -1,6 +1,6 @@
 # 文章目录
 
-大家有问题欢迎留言issue讨论。
+大家有问题欢迎留言issues讨论。
 
 ### [【翻译】React Advanced Performance 性能进阶 - 未翻译完](https://github.com/cnsnake11/blog/blob/master/ReactNative%E7%BF%BB%E8%AF%91/React%20Advanced%20Performance.md)
 
