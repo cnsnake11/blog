@@ -58,6 +58,7 @@ shouldComponentUpdate方法将react频繁的render动作转变成频繁的state�
 
 
 
+[评论直达连接](https://github.com/cnsnake11/blog/issues/23)
 
 
 
