@@ -2,7 +2,7 @@
 
 大家有问题欢迎留言issues讨论。
 
-### [【原创】前端和开闭原则](https://github.com/cnsnake11/blog/blob/master/ReactNative%E5%BC%80%E5%8F%91%E6%8C%87%E5%AF%BC/ReactNative%E5%88%86%E4%BA%AB.md)
+### [【原创】前端和开闭原则](https://github.com/cnsnake11/blog/blob/master/%E5%85%B6%E5%AE%83/%E5%89%8D%E7%AB%AF%E5%92%8C%E5%BC%80%E9%97%AD%E5%8E%9F%E5%88%99.md)
 
 ### [【原创】React的render通用解决方案](https://github.com/cnsnake11/blog/blob/master/ReactNative%E5%BC%80%E5%8F%91%E6%8C%87%E5%AF%BC/React%E7%9A%84render%E4%BC%98%E5%8C%96%E6%A1%86%E6%9E%B6.md)
 
