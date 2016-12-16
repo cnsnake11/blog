@@ -1,4 +1,4 @@
-# React Advanced Performance 性能进阶 - 未翻译完
+# React Advanced Performance 性能进阶
 
 英文原文地址：https://facebook.github.io/react/docs/advanced-performance.html
 
