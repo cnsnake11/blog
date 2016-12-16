@@ -149,7 +149,7 @@ shouldComponentUpdate: function(nextProps, nextState) {
 
 Basically, we ended up doing a deep comparison to make sure we properly track changes. In terms of performance, this approach is pretty expensive. It doesn't scale as we would have to write different deep equality code for each model. On top of that, it might not even work if we don't carefully manage object references. Say this component is used by a parent:
 
-
+原则上来讲，为了保证判断的准确性，必须要进行深比对。从性能的角度考虑，这种方式的损耗较大。而且可能会根据不同的模型写不同的深比对代码，具体的损耗不太好估量。更重要的是，如果对象引用关系处理的不好，会产生bug。比如下面这个父子组件通信的例子：
 
 ```
 React.createClass({
@@ -159,7 +159,7 @@ React.createClass({
 
   onClick: function() {
     var value = this.state.value;
-    value.foo += 'bar'; // ANTI-PATTERN!
+    value.foo += 'bar'; // ANTI-PATTERN! 反模式！
     this.setState({ value: value });
   },
 
@@ -176,18 +176,33 @@ React.createClass({
 
 The first time the inner component gets rendered, it will have { foo: 'bar' } as the value prop. If the user clicks on the anchor, the parent component's state will get updated to { value: { foo: 'barbar' } }, triggering the re-rendering process of the inner component, which will receive { foo: 'barbar' } as the new value for the prop.
 
+子组件第一次渲染的时候，属性value的值是{ foo: 'bar'}。如果用户点击了锚点，父组件的state会变成{ value: { foo: 'barbar' } }，同时会触发子组件的渲染过程，子组件会的属性value也会同时变成{ foo: 'barbar' }。
+
 The problem is that since the parent and inner components share a reference to the same object, when the object gets mutated on line 2 of the onClick function, the prop the inner component had will change. So, when the re-rendering process starts, and shouldComponentUpdate gets invoked, this.props.value.foo will be equal to nextProps.value.foo, because in fact, this.props.value references the same object as nextProps.value.
 
+现在的问题是，因为父组件和子组件都依赖了同一个对象引用，当这个对象在click方法中的第二行被改变了的时候，此时还没有setState，子组件依赖的对象也就立刻发生了变化，因为是同一个对象引用。所以，当渲染过程开始的时候，shouldComponentUpdate先被触发，this.props.value.foo和nextProps.value.foo是相等的，因为，实际上this.props.value和nextProps.value都引用了同一个对象。
+
 Consequently, since we'll miss the change on the prop and short circuit the re-rendering process, the UI won't get updated from 'bar' to 'barbar'.
+
+所以，我们就错过了属性值的改变和重新渲染的过程，页面也就不会从bar变成barbar。
 
 #Immutable-js to the rescue 不可变数据类型的解决方案
 
 Immutable-js is a JavaScript collections library written by Lee Byron, which Facebook recently open-sourced. It provides immutable persistent collections via structural sharing. Let's see what these properties mean:
 
+Immutable-js是一个开源的js的集合库，作者是facebook的Lee Byron。他提供了可以通过结构共享的不可变、持久化集合类型。具体描述如下：
+
 1. Immutable: once created, a collection cannot be altered at another point in time.
 2. Persistent: new collections can be created from a previous collection and a mutation such as set. The original collection is still valid after the new collection is created.
 3. Structural Sharing: new collections are created using as much of the same structure as the original collection as possible, reducing copying to a minimum to achieve space efficiency and acceptable performance. If the new collection is equal to the original, the original is often returned.
+
+1. 不可变：集合类型一旦创建，就不会改变。
+2. 持久化：新的集合可以通过老的集合或者通过老的集合的set方法来创建。此时老的集合仍然是可用的。
+3. 结构共享：新创建的集合的结构和原始集合的保持一致，在创建过程中会尽可能的提升性能和降低内存损耗。如果新集合和原始集合是一模一样的，就不会创建新集合，而是直接返回原始集合。
+
 Immutability makes tracking changes cheap; a change will always result in a new object so we only need to check if the reference to the object has changed. For example, in this regular JavaScript code:
+
+不可变的特性可以使判断对象是否发生了变化变得很简单；因为发生了改变就会使用新的对象，所以只要判断对象的引用是否发生了改变就可以了。看下面这个例子，首先是正常的js代码：
 
 ```
 var x = { foo: "bar" };
@@ -198,6 +213,8 @@ x === y; // true
 
 Although y was edited, since it's a reference to the same object as x, this comparison returns true. However, this code could be written using immutable-js as follows:
 
+尽管y被修改了，但是对象x的引用和y的引用还是同一个对象，并没有发生变化，所以y===x仍会返回true。下面是用immutable-js实现的代码示例：
+
 ```
 var SomeRecord = Immutable.Record({ foo: null });
 var x = new SomeRecord({ foo: 'bar'  });
@@ -207,15 +224,25 @@ x === y; // false
 
 In this case, since a new reference is returned when mutating x, we can safely assume that x has changed.
 
+在此示例中，当x被调用了set方法同时确实发生了变化，就会返回一个新的对象，所以x和y不是同一个对象的引用了，x===y是false，我们就可以方便的通过x和y是否相等来判断x是否发生了变化。
+
 Another possible way to track changes could be doing dirty checking by having a flag set by setters. A problem with this approach is that it forces you to use setters and, either write a lot of additional code, or somehow instrument your classes. Alternatively, you could deep copy the object just before the mutations and deep compare to determine whether there was a change or not. A problem with this approach is both deepCopy and deepCompare are expensive operations.
 
+侦测对象变化还有另外的办法，比如在对象的setter方法中加一个标识。这个方法的问题是你必须使用setter方法，并且还要添加很多额外的代码和使用说明。或者，你可以在对象变化的时候使用深拷贝，也或者，在判断对象变化的时候直接使用深比对。这2种方法的问题都是性能损耗过大。
+
 So, Immutable data structures provides you a cheap and less verbose way to track changes on objects, which is all we need to implement shouldComponentUpdate. Therefore, if we model props and state attributes using the abstractions provided by immutable-js we'll be able to use PureRenderMixin and get a nice boost in perf.
+
+所以，使用不可变数据类型的方案来侦测对象改变是性能最好效率最高的方式，我们只需要直接实现shouldComponentUpdate方法就好了。并且，如果model的props和state都是不可变数据类型，我们只需直接引入PureRenderMixin就可以得到性能的提升。
 
 #Immutable-js and Flux 不可变数据类型和flux
 
 If you're using Flux, you should start writing your stores using immutable-js. Take a look at the full API.
 
+如果使用flux的话，可以使用immutable-js来编写store。
+
 Let's see one possible way to model the thread example using Immutable data structures. First, we need to define a Record for each of the entities we're trying to model. Records are just immutable containers that hold values for a specific set of fields:
+
+我们来看一看用不可变数据结构对the thread 例子的建模。首先，我们定义一个记录对象。记录对象是不可变数据容器，一般会有下面这些字段：
 
 ```
 var User = Immutable.Record({
@@ -233,7 +260,11 @@ var Message = Immutable.Record({
 
 The Record function receives an object that defines the fields the object has and its default values.
 
+Record方法的输入参数是定义字段和字段默认值的对象。
+
 The messages store could keep track of the users and messages using two lists:
+
+消息store由users和messages组成：
 
 ```
 this.users = Immutable.List();
@@ -241,6 +272,8 @@ this.messages = Immutable.List();
 ```
 
 It should be pretty straightforward to implement functions to process each payload type. For instance, when the store sees a payload representing a new message, we can just create a new record and append it to the messages list:
+
+处理这个数据结构很简单。例如，当收到一个新消息，我只需要新创建一个record并将其放入message list中：
 
 ```
 this.messages = this.messages.push(new Message({
@@ -252,7 +285,11 @@ this.messages = this.messages.push(new Message({
 
 Note that since the data structures are immutable, we need to assign the result of the push function to this.messages.
 
+注意，因为数据类型是不可变类型，我们需要将push的返回值从新赋给this.messages。
+
 On the React side, if we also use immutable-js data structures to hold the components' state, we could mix PureRenderMixin into all our components and short circuit the re-rendering process.
+
+在和react结合使用的时候，如果使用不可变数据类型作为组件的state，直接将PureRenderMixin应用到组件中，就能在渲染的过程中享用到极高的性能。
 
 
 
