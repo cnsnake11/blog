@@ -1,4 +1,4 @@
-# 【翻译】Reconciliation 比对算法
+# 【翻译】Reconciliation React比对算法
 
 原文地址：https://facebook.github.io/react/docs/reconciliation.html
 
