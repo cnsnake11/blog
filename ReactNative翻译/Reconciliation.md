@@ -38,9 +38,9 @@ react比对2棵树的时候，会首先比对根节点。会根据根节点的�
 
 ### Elements Of Different Types 不同类型的节点
 
-Whenever the root elements have different types, React will tear down the old tree and build the new tree from scratch. Going from <a> to <img>, or from <Article> to <Comment>, or from <Button> to <div> - any of those will lead to a full rebuild.
+Whenever the root elements have different types, React will tear down the old tree and build the new tree from scratch. Going from a to img, or from Article to Comment, or from Button to div - any of those will lead to a full rebuild.
 
-当根节点是不同类型的时候，react将会移除整棵老树，完全新建一棵树替代。比如，<a> to <img>或者from <Article> to <Comment>, 或者 from <Button> to <div>，所有这些改变都会触发一次完整的重新构建动作。
+当根节点是不同类型的时候，react将会移除整棵老树，完全新建一棵树替代。比如，a to img或者from Article to Comment, 或者 from Button to div，所有这些改变都会触发一次完整的重新构建动作。
 
 When tearing down a tree, old DOM nodes are destroyed. Component instances receive componentWillUnmount(). When building up a new tree, new DOM nodes are inserted into the DOM. Component instances receive componentWillMount() and then componentDidMount(). Any state associated with the old tree is lost.
 
@@ -133,9 +133,9 @@ For example, when adding an element at the end of the children, converting betwe
 </ul>
 ```
 
-React will match the two <li>first</li> trees, match the two <li>second</li> trees, and then insert the <li>third</li> tree.
+React will match the two li first trees, match the two li second trees, and then insert the li third tree.
 
-react会认为2个<li>first</li>是相同的，2个<li>second</li>是相同的，并找出了新增的<li>third</li>。
+react会认为2个li first是相同的，2个li second是相同的，并找出了新增的li third。
 
 If you implement it naively, inserting an element at the beginning has worse performance. For example, converting between these two trees works poorly:
 
@@ -154,9 +154,9 @@ If you implement it naively, inserting an element at the beginning has worse per
 </ul>
 ```
 
-React will mutate every child instead of realizing it can keep the <li>Duke</li> and <li>Villanova</li> subtrees intact. This inefficiency can be a problem.
+React will mutate every child instead of realizing it can keep the li Duke and li Villanova subtrees intact. This inefficiency can be a problem.
 
-react会认为每一个孩子节点都发生了变化，而不是保持<li>Duke</li>和<li>Villanova</li>不变。这种低效的执行很成问题。
+react会认为每一个孩子节点都发生了变化，而不是保持li Duke和li Villanova不变。这种低效的执行很成问题。
 
 
 ### Keys
@@ -198,7 +198,7 @@ As a last resort, you can pass item's index in the array as a key. This can work
 
 还有一个办法，你可以使用数组的序号作为key。如果你的元素没有改变顺序的需求的话，就没有问题，但是如果有改变顺序的功能就会非常慢。
 
-# Tradeoffs 权衡
+# Tradeoffs 设计的折中
 
 It is important to remember that the reconciliation algorithm is an implementation detail. React could rerender the whole app on every action; the end result would be the same. We are regularly refining the heuristics in order to make common use cases faster.
 
