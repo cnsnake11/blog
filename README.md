@@ -2,6 +2,8 @@
 
 大家有问题欢迎留言issues讨论。
 
+### [【翻译】ReactNative:关于苹果审核警告](https://github.com/cnsnake11/blog/blob/master/ReactNative%E7%BF%BB%E8%AF%91/ReactNative%20:%20A%20warning%20from%20Apple.md)
+
 ### [【翻译】Reconciliation React比对算法](https://github.com/cnsnake11/blog/blob/master/ReactNative%E7%BF%BB%E8%AF%91/Reconciliation.md)
 
 ### [【原创】数据结构--树形数据的处理(2)](https://github.com/cnsnake11/blog/blob/master/%E5%85%B6%E5%AE%83/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84--%E6%A0%91%E5%BD%A2%E6%95%B0%E6%8D%AE%E7%9A%84%E5%A4%84%E7%90%862.md)
