@@ -2,6 +2,12 @@
 
 大家有问题欢迎留言issues讨论。
 
+### [【翻译】 WebAssembly(2-2) JIT编译原理速成](https://github.com/cnsnake11/blog/blob/master/%E5%85%B6%E5%AE%83/WebAssembly(2-2)A%20crash%20course%20in%20just-in-time%20(JIT)%20compilers.md)
+
+### [【翻译】 WebAssembly(2-1) JIT编译原理速成](https://github.com/cnsnake11/blog/blob/master/%E5%85%B6%E5%AE%83/WebAssembly(2-1)A%20crash%20course%20in%20just-in-time%20(JIT)%20compilers.md)
+
+### [【翻译】 WebAssembly(1) 看卡通，入门WebAssembly](https://github.com/cnsnake11/blog/blob/master/%E5%85%B6%E5%AE%83/WebAssembly(1)%20A%20cartoon%20intro%20to%20WebAssembly.md)
+
 ### [【翻译】ReactNative:关于苹果审核警告](https://github.com/cnsnake11/blog/blob/master/ReactNative%E7%BF%BB%E8%AF%91/ReactNative%20:%20A%20warning%20from%20Apple.md)
 
 ### [【翻译】Reconciliation React比对算法](https://github.com/cnsnake11/blog/blob/master/ReactNative%E7%BF%BB%E8%AF%91/Reconciliation.md)
