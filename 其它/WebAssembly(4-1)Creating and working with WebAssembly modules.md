@@ -48,31 +48,45 @@ So WebAssembly is a little bit different than other kinds of assembly. It’s a 
 
 Because of this, WebAssembly instructions are sometimes called virtual instructions. They have a much more direct mapping to machine code than JavaScript source code. They represent a sort of intersection of what can be done efficiently across common popular hardware. But they aren’t direct mappings to the particular machine code of one specific hardware.
 
-因为如此，WebAssembly指令也被称为虚拟指令。WebAssembly比JavaScript有更多的机器码指令可以被使用。这些指令在大部分的流行硬件设备上都执行的非常快。但是，一些特殊的硬件设备并不支持这些指令。
+因为如此，WebAssembly指令也被称为虚拟指令。它比 JavaScript 代码更直接地映射到机器码，它也能在通用的硬件上更有效地执行代码。所以它并不直接映射成特定硬件的机器码。
+
 
 ![](media/14924146091466.png)
 
 The browser downloads the WebAssembly. Then, it can make the short hop from WebAssembly to that target machine’s assembly code.
 
-浏览器下载完WebAssembly后，会将WebAssembly转换到目标机器的汇编语言。
+浏览器下载完WebAssembly后，会先经过WebAssembly的处理，然后再到目标机器的汇编语言。
 
 # Compiling to .wasm
 
 The compiler tool chain that currently has the most support for WebAssembly is called LLVM. There are a number of different front-ends and back-ends that can be plugged into LLVM.
 
-Note: Most WebAssembly module developers will code in languages like C and Rust and then compile to WebAssembly, but there are other ways to create a WebAssembly module. For example, there is an experimental tool that helps you build a WebAssembly module using TypeScript, or you cancode in the text representation of WebAssembly directly. 
+目前对于 WebAssembly 支持情况最好的编译器工具链是 LLVM。有很多不同的前端和后端插件可以用在 LLVM 上。
+
+Note: Most WebAssembly module developers will code in languages like C and Rust and then compile to WebAssembly, but there are other ways to create a WebAssembly module. For example, there is an experimental tool that helps you build a WebAssembly module using TypeScript, or you cancode in the text representation of WebAssembly directly.
+
+注意：很多 WebAssembly 开发者用 C 语言或者 Rust 开发，再编译成 WebAssembly。其实还有其他的方式来开发 WebAssembly 模块。例如利用 TypeScript 开发 WebAssembly 模块，或者直接用 WebAssembly 文本也可以。 
 Let’s say that we wanted to go from C to WebAssembly. We could use the clang front-end to go from C to the LLVM intermediate representation. Once it’s in LLVM’s IR, LLVM understands it, so LLVM can perform some optimizations.
+
+假设想从 C 语言到 WebAssembly，我们就需要 clang 前端来把 C 代码变成 LLVM 中间代码。当变换成了 LLVM IR 时，说明 LLVM 已经理解了代码，它会对代码自动地做一些优化。
 
 To go from LLVM’s IR (intermediate representation) to WebAssembly, we need a back-end. There is one that’s currently in progress in the LLVM project. That back-end is most of the way there and should be finalized soon. However, it can be tricky to get it working today.
 
+为了从 LLVM IR 生成 WebAssembly，还需要后端编译器。在 LLVM 的工程中有正在开发中的后端，而且应该很快就开发完成了，现在这个时间节点，暂时还看不到它是如何起作用的。
+
 There’s another tool called Emscripten which is a bit easier to use at the moment. It has its own back-end that can produce WebAssembly by compiling to another target (called asm.js) and then converting that to WebAssembly. It uses LLVM under the hood, though, so you can switch between the two back-ends from Emscripten.
+
+还有一个易用的工具，叫做 Emscripten。它通过自己的后端先把代码转换成自己的中间代码（叫做 asm.js），然后再转化成 WebAssembly。实际上它背后也是使用的 LLVM。
 
 ![](media/14924146553887.png)
 
 Emscripten includes many additional tools and libraries to allow porting whole C/C++ codebases, so it’s more of a software developer kit (SDK) than a compiler. For example, systems developers are used to having a filesystem that they can read from and write to, so Emscripten can simulate a file system using IndexedDB.
 
+Emscripten 还包含了许多额外的工具和库来包容整个 C/C++ 代码库，所以它更像是一个软件开发者工具包（SDK）而不是编译器。例如系统开发者需要文件系统以对文件进行读写，Emscripten 就有一个 IndexedDB 来模拟文件系统。
+
 Regardless of the toolchain you’ve used, the end result is a file that ends in .wasm. I’ll explain more about the structure of the .wasm file below. First, let’s look at how you can use it in JS.
 
+不考虑太多的这些工具链，只要知道最终生成了 .wasm 文件就可以了。后面我会介绍 .wasm 文件的结构，在这之前先一起了解一下在 JS 中如何使用它。
 
 未完待续。
 
