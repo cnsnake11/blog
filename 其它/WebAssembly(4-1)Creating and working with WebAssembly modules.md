@@ -4,33 +4,57 @@
 
 WebAssembly is a way to run programming languages other than JavaScript on web pages. In the past when you wanted to run code in the browser to interact with the different parts of the web page, your only option was JavaScript.
 
+除了JavaScript，WebAssembly是在浏览器中运行程序的另外一种方式。在过去，只能用JavaScript。
+
 So when people talk about WebAssembly being fast, the apples to apples comparison is to JavaScript. But that doesn’t mean that it’s an either/or situation—that you are either using WebAssembly, or you’re using JavaScript.
+
+所以，当说道WebAssembly的性能更快时，都是和JavaScript进行比较。但这并不意味着你就要从JavaScript和WebAssembly二选一了。
 
 In fact, we expect that developers are going to use both WebAssembly and JavaScript in the same application. Even if you don’t write WebAssembly yourself, you can take advantage of it.
 
+实际上，我们希望开发者能够在同一个应用中同时使用WebAssembly和JavaScript。即使你自己不会做WebAssembly的编程，你也可以应用到他。
+
 WebAssembly modules define functions that can be used from JavaScript. So just like you download a module like lodash from npm today and call functions that are part of its API, you will be able to download WebAssembly modules in the future.
+
+WebAssembly模块定义的方法可以被JavaScript调用。就像你使用npm下载安装loadsh并使用它的api一样，未来你也可以下载WebAssembly模块并使用。
 
 So let’s see how we can create WebAssembly modules, and then how we can use them from JavaScript.
 
-# Where does WebAssembly fit?
+现在，我们来看看如何来创建一个WebAssembly模块，和如何在JavaScript中来使用他。
+
+# Where does WebAssembly fit? WebAssembly的定位
 
 In the article about assembly, I talked about how compilers take high-level programming languages and translate them to machine code.
+
+在讲解汇编的文章中，我们提到了如何将高级语言转换成机器码。
 
 ![](media/14924145446275.png)
 
 Where does WebAssembly fit into this picture?
 
+那么WebAssembly是处于图中的哪一个部分呢。
+
 You might think it is just another one of the target assembly languages. That is kind of true, except that each one of those languages (x86, ARM ) corresponds to a particular machine architecture.
+
+你可能会认为WebAssembly是另外一种的汇编语言。这确实是对的，除了传统汇编语言会有不同机器架构（x86，arm）的区分。
 
 When you’re delivering code to be executed on the user’s machine across the web, you don’t know what your target architecture the code will be running on.
 
+当你在浏览器中运行你的代码的时候，你不用清楚你的机器架构是什么。
+
 So WebAssembly is a little bit different than other kinds of assembly. It’s a machine language for a conceptual machine, not an actual, physical machine.
 
+所以，WebAssembly和传统汇编语言还是有一点区别。他是一种用于虚拟机的汇编语言，并不是实际的，物理上存在的机器。
+
 Because of this, WebAssembly instructions are sometimes called virtual instructions. They have a much more direct mapping to machine code than JavaScript source code. They represent a sort of intersection of what can be done efficiently across common popular hardware. But they aren’t direct mappings to the particular machine code of one specific hardware.
+
+因为如此，WebAssembly指令也被称为虚拟指令。WebAssembly比JavaScript有更多的机器码指令可以被使用。这些指令在大部分的流行硬件设备上都执行的非常快。但是，一些特殊的硬件设备并不支持这些指令。
 
 ![](media/14924146091466.png)
 
 The browser downloads the WebAssembly. Then, it can make the short hop from WebAssembly to that target machine’s assembly code.
+
+浏览器下载完WebAssembly后，会将WebAssembly转换到目标机器的汇编语言。
 
 # Compiling to .wasm
 
@@ -48,4 +72,7 @@ There’s another tool called Emscripten which is a bit easier to use at the mom
 Emscripten includes many additional tools and libraries to allow porting whole C/C++ codebases, so it’s more of a software developer kit (SDK) than a compiler. For example, systems developers are used to having a filesystem that they can read from and write to, so Emscripten can simulate a file system using IndexedDB.
 
 Regardless of the toolchain you’ve used, the end result is a file that ends in .wasm. I’ll explain more about the structure of the .wasm file below. First, let’s look at how you can use it in JS.
+
+
+未完待续。
 
