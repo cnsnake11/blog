@@ -47,11 +47,9 @@
 
 而富文本编辑器生成的html字符串是这样的：
 
-```
 
 <p>段落1段落1段落1段落1段落1段落1段落1段落1段落1<img src="http://pic09.babytreeimg.com/contentplatform/20170922/FueIRKRv3t6fFQa0kBr8sg5caEQA" _bbt_json="{&quot;t&quot;:&quot;2&quot;,&quot;id&quot;:&quot;4962&quot;,&quot;path&quot;:&quot;http://pic09.babytreeimg.com/contentplatform/20170922/FueIRKRv3t6fFQa0kBr8sg5caEQA&quot;}">段落2段落2段落2<b>段落2段落2段落2段落2段<i>落2段落2段落2段落2段落2段落2段落2段落2段落2段落2段落2段落2段落2段落2段落2段落</i></b><i>2段落2段落2段落</i>2段落2段落2段落2段落2段落2段落2段落2段落2段落2段落2段落2段落2段落2段落2段落2段落2段落2段落2</p><br><p><img src="http://pic06.babytreeimg.com/contentplatform/20170922/FmSyH6SL_8BD5TYIWERjOqjwPcZ9" _bbt_json="{&quot;t&quot;:&quot;2&quot;,&quot;id&quot;:&quot;4960&quot;,&quot;path&quot;:&quot;http://pic06.babytreeimg.com/contentplatform/20170922/FmSyH6SL_8BD5TYIWERjOqjwPcZ9&quot;}"><br></p><p>段落3段落3段落3段落3段落3段落3段落3段落3段落3段落3</p>
 
-```
 
 所以，就需要一个转换引擎，来将html字符串转换为结构化的数据。
 
@@ -67,9 +65,10 @@
                  我是文本1
                  <img src="地址" />
                  我是<u>文本</u>2
-                 </i>
-             </p>
-     </h1>
+                 
+            </i>
+    </p>
+</h1>
 
 ```
 
@@ -130,7 +129,21 @@
 
 ```
 
-getTags = (el) => {     let el2 = el;     let start = '';     let end = '';     while (true) {         el2 = el2.parentNode;         if (el2 === this.container) {             return { start, end };         }         if (el2 && el2.tagName) {             end = `${end}</${el2.tagName.toLowerCase()}>`;             start = `<${el2.tagName.toLowerCase()}>${start}`;         }     } }
+getTags = (el) => {
+        let el2 = el;
+        let start = '';
+        let end = '';
+        while (true) {
+            el2 = el2.parentNode;
+            if (el2 === this.container) {
+                return { start, end };
+            }
+            if (el2 && el2.tagName) {
+                end = `${end}</${el2.tagName.toLowerCase()}>`;
+                start = `<${el2.tagName.toLowerCase()}>${start}`;
+            }
+        }
+    }
 
 ```
 所以，实际上我们是利用了dom树的childNodes接口进行递归遍历，找到目标元素之后，又利用dom树的parentNode接口进行向上查找。
@@ -141,7 +154,37 @@ getTags = (el) => {     let el2 = el;     let start = '';     let end = ''
 
 ```
 
-processHTML = () => {     let html = this.container.innerHTML;     if (this.domResult.length === 0) {         this.result.push({             t: '1',             txt: html,         });         return;     }     for (let i = 0; i < this.domResult.length; i += 1) {         const one = this.domResult[i];         const index = html.indexOf(one.html);         const txt = html.substring(0, index) + one.tags.end;          this.result.push({             t: '1',             txt,         });         this.result.push(one.json);          html = html.substring(index + one.html.length, html.length);         html = one.tags.start + html;          if (i === this.domResult.length - 1 && html) {             this.result.push({                 t: '1',                 txt: html,             });         }     } }
+processHTML = () => {
+        let html = this.container.innerHTML;
+        if (this.domResult.length === 0) {
+            this.result.push({
+                t: '1',
+                txt: html,
+            });
+            return;
+        }
+        for (let i = 0; i < this.domResult.length; i += 1) {
+            const one = this.domResult[i];
+            const index = html.indexOf(one.html);
+            const txt = html.substring(0, index) + one.tags.end;
+
+            this.result.push({
+                t: '1',
+                txt,
+            });
+            this.result.push(one.json);
+
+            html = html.substring(index + one.html.length, html.length);
+            html = one.tags.start + html;
+
+            if (i === this.domResult.length - 1 && html) {
+                this.result.push({
+                    t: '1',
+                    txt: html,
+                });
+            }
+        }
+    }
 
 ```
 
@@ -149,7 +192,94 @@ processHTML = () => {     let html = this.container.innerHTML;     if (this.
 
 ```
 
-import { BBT_JSON } from './Constant';  export default class HtmlParser {      constructor(container) {         this.container = container; // 容器对象         this.domResult = []; // 解析dom的结果 用于替换字符串用         this.result = []; // 最终的运行结果     }      getData = () => {         // 1 遍历dom树 解析需要替换的节点和替换的内容 使用标记标签替换原标签         this.processDom(this.container);          // 2 执行html字符串的分割和标签补齐 并生成格式化数据         this.processHTML();          return this.result;     }      processDom = (root) => {         const childs = root.childNodes;         for (let i = 0; i < childs.length; i += 1) {             const el = childs[i];             if (el.getAttribute && el.getAttribute(BBT_JSON)) {                 const tags = this.getTags(el);                 this.domResult.push({                     html: el.outerHTML,                     json: JSON.parse(el.getAttribute(BBT_JSON)),                     tags,                 });             }             this.processDom(el);         }     }      processHTML = () => {         let html = this.container.innerHTML;         if (this.domResult.length === 0) {             this.result.push({                 t: '1',                 txt: html,             });             return;         }         for (let i = 0; i < this.domResult.length; i += 1) {             const one = this.domResult[i];             const index = html.indexOf(one.html);             const txt = html.substring(0, index) + one.tags.end;              this.result.push({                 t: '1',                 txt,             });             this.result.push(one.json);              html = html.substring(index + one.html.length, html.length);             html = one.tags.start + html;              if (i === this.domResult.length - 1 && html) {                 this.result.push({                     t: '1',                     txt: html,                 });             }         }     }      getTags = (el) => {         let el2 = el;         let start = '';         let end = '';         while (true) {             el2 = el2.parentNode;             if (el2 === this.container) {                 return { start, end };             }             if (el2 && el2.tagName) {                 end = `${end}</${el2.tagName.toLowerCase()}>`;                 start = `<${el2.tagName.toLowerCase()}>${start}`;             }         }     } } 
+import { BBT_JSON } from './Constant';
+
+export default class HtmlParser {
+
+    constructor(container) {
+        this.container = container; // 容器对象
+        this.domResult = []; // 解析dom的结果 用于替换字符串用
+        this.result = []; // 最终的运行结果
+    }
+
+    getData = () => {
+        // 1 遍历dom树 解析需要替换的节点和替换的内容 使用标记标签替换原标签
+        this.processDom(this.container);
+
+        // 2 执行html字符串的分割和标签补齐 并生成格式化数据
+        this.processHTML();
+
+        return this.result;
+    }
+
+    processDom = (root) => {
+        const childs = root.childNodes;
+        for (let i = 0; i < childs.length; i += 1) {
+            const el = childs[i];
+            if (el.getAttribute && el.getAttribute(BBT_JSON)) {
+                const tags = this.getTags(el);
+                this.domResult.push({
+                    html: el.outerHTML,
+                    json: JSON.parse(el.getAttribute(BBT_JSON)),
+                    tags,
+                });
+            }
+            this.processDom(el);
+        }
+    }
+
+    processHTML = () => {
+        let html = this.container.innerHTML;
+        if (this.domResult.length === 0) {
+            this.result.push({
+                t: '1',
+                txt: html,
+            });
+            return;
+        }
+        for (let i = 0; i < this.domResult.length; i += 1) {
+            const one = this.domResult[i];
+            const index = html.indexOf(one.html);
+            const txt = html.substring(0, index) + one.tags.end;
+
+            this.result.push({
+                t: '1',
+                txt,
+            });
+            this.result.push(one.json);
+
+            html = html.substring(index + one.html.length, html.length);
+            html = one.tags.start + html;
+
+            if (i === this.domResult.length - 1 && html) {
+                this.result.push({
+                    t: '1',
+                    txt: html,
+                });
+            }
+        }
+    }
+
+    getTags = (el) => {
+        let el2 = el;
+        let start = '';
+        let end = '';
+        while (true) {
+            el2 = el2.parentNode;
+            if (el2 === this.container) {
+                return { start, end };
+            }
+            if (el2 && el2.tagName) {
+                end = `${end}</${el2.tagName.toLowerCase()}>`;
+                start = `<${el2.tagName.toLowerCase()}>${start}`;
+            }
+        }
+    }
+}
+
 
 ```
+
+
+
 
