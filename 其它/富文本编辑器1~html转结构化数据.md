@@ -47,8 +47,9 @@
 
 而富文本编辑器生成的html字符串是这样的：
 
-
+```
 <p>段落1段落1段落1段落1段落1段落1段落1段落1段落1<img src="http://pic09.babytreeimg.com/contentplatform/20170922/FueIRKRv3t6fFQa0kBr8sg5caEQA" _bbt_json="{&quot;t&quot;:&quot;2&quot;,&quot;id&quot;:&quot;4962&quot;,&quot;path&quot;:&quot;http://pic09.babytreeimg.com/contentplatform/20170922/FueIRKRv3t6fFQa0kBr8sg5caEQA&quot;}">段落2段落2段落2<b>段落2段落2段落2段落2段<i>落2段落2段落2段落2段落2段落2段落2段落2段落2段落2段落2段落2段落2段落2段落2段落</i></b><i>2段落2段落2段落</i>2段落2段落2段落2段落2段落2段落2段落2段落2段落2段落2段落2段落2段落2段落2段落2段落2段落2段落2</p><br><p><img src="http://pic06.babytreeimg.com/contentplatform/20170922/FmSyH6SL_8BD5TYIWERjOqjwPcZ9" _bbt_json="{&quot;t&quot;:&quot;2&quot;,&quot;id&quot;:&quot;4960&quot;,&quot;path&quot;:&quot;http://pic06.babytreeimg.com/contentplatform/20170922/FmSyH6SL_8BD5TYIWERjOqjwPcZ9&quot;}"><br></p><p>段落3段落3段落3段落3段落3段落3段落3段落3段落3段落3</p>
+```
 
 
 所以，就需要一个转换引擎，来将html字符串转换为结构化的数据。
@@ -95,9 +96,10 @@
 
 仔细看一下就会发现，除了执行字符串分割之外，还要进行html开始标签和结束标签的补位。
 
-文本1需要对html结束标签进行补位，也就是</i></p></h1>。
+文本1需要对html结束标签进行补位，也就是```</i></p></h1>```。
 
-文本2需要对html开始标签进行补位，也就是<h1><p><i>。
+文本2需要对html开始标签进行补位，也就是```<h1><p><i>```。
+
 
 # 算法原理
 
@@ -150,7 +152,7 @@ getTags = (el) => {
 
 ### 步骤2 利用中间结果，分割字符串，补齐html标签
 
-有了中间结果数组之后，后面就简单了，遍历中间结果数组，针对数组的每一项，找到html字符串中对应的字符串【比如<img src="地址" />】，将其前面的部分分割出来【也就是<h1><p><i>我是文本1】，并在其后面补上中间结果中的endTag【</i></p></h1>】，然后将中间结果后面的字符串【我是<u>文本</u>2</i></p></h1>】加上startTag【<i><p><h1>】，然后继续遍历即可。代码如下：
+有了中间结果数组之后，后面就简单了，遍历中间结果数组，针对数组的每一项，找到html字符串中对应的字符串【比如```<img src="地址" />```】，将其前面的部分分割出来【也就是```<h1><p><i>```我是文本1】，并在其后面补上中间结果中的endTag【```</i></p></h1>```】，然后将中间结果后面的字符串【```我是<u>文本</u>2</i></p></h1>```】加上startTag【```<i><p><h1>```】，然后继续遍历即可。代码如下：
 
 ```
 
@@ -279,6 +281,10 @@ export default class HtmlParser {
 
 
 ```
+
+
+
+
 
 
 
