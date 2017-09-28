@@ -1,6 +1,6 @@
 # ReactNative导航设计与实现
 
-#前言
+# 前言
 
 关于reactnaitve的导航，官方提供了2个组件，NavigatorIOS和Navigator，其中官方并不推荐使用NavigatorIOS，它不是官方维护的，不能保证及时的更新和维护。
 
@@ -10,7 +10,7 @@ Navigator的劣势：Navigator组件是纯js的实现，所以在页面进行转
 
 官方的Navigator组件使用方式较为灵活，本文的目的是选取一种最佳用法，并提取出通用功能应对常用场景，规范和设计项目中导航的使用。
 
-#定义
+# 定义
 
 rn应用：全站rn应用，简称rn应用。
 
@@ -22,7 +22,7 @@ nav：Navigator组件对象的简称，注意是实例化好的对象，不是�
 
 Header：自定义的导航栏组件。
 
-#体系结构、设计原则
+# 体系结构、设计原则
 
 一个rn应用或者一个rn模块，有且只有一个Navigator组件被定义。
 
@@ -33,7 +33,7 @@ Header：自定义的导航栏组件。
 不要使用Navigator的navigationBar，请自定义导航栏组件，例如Header组件。
 
 
-#Navigator组件的定义和初始化
+# Navigator组件的定义和初始化
 
 在rn首页中的render方法中，定义一个Navigator组件，并做好以下几件事：
 
@@ -41,7 +41,8 @@ Header：自定义的导航栏组件。
 2. 实现好android的物理返回按键
 3. 初始化真正的rn首页
 
-##实现统一路由函数renderScene
+## 实现统一路由函数renderScene
+
 renderScene函数是Navigator组件的必填函数，入参是route对象和当前的nav对象，返回值是jsx。
 
 此函数的意思是根据传入的route，返回一个作为新页面的jsx，也就是说所有的路由算法都是在此函数中实现的。
@@ -101,7 +102,7 @@ nav.push({
 });
 ```
 
-##android物理返回按键的处理
+## android物理返回按键的处理
 如果你的应用需要支持android的话，那就要实现andorid的物理返回按键的对应处理。
 
 一般按物理返回按键要么是返回上一页面，要么是返回页面的上一状态【例如，有打开的弹窗，按返回是关闭这个弹窗】。
@@ -159,7 +160,7 @@ componentWillMount() {
 ```
 
 
-##初始化真正的rn首页
+## 初始化真正的rn首页
 
 此处较为简单，直接使用Navigator组件的initialRoute属性来指定初始化的route对象。
 
@@ -170,7 +171,7 @@ componentWillMount() {
        }} />
 ```
 
-#页面跳转
+# 页面跳转
 
 根据前面设计好的renderScene方法，直接使用如下代码,即可跳转到Page2，并将nav对象传递给了Page2.
 
@@ -181,7 +182,7 @@ nav.push({
 });
 ```
 
-#页面返回
+# 页面返回
 
 页面返回直接使用
 
@@ -189,7 +190,7 @@ nav.push({
 nav.pop();
 ```
 
-#页面转场优化
+# 页面转场优化
 
 前面提到，Navigator组件完全使用js实现，由于js的单线程特点，如果在页面转场动画过程中，js干其他事情【比如渲染个某个jsx】超过了16ms，那么转场动画将不足60帧，给用户的感觉就是动画有卡顿。
 
@@ -214,7 +215,7 @@ InteractionManager.runAfterInteractions(() => {
 
 也可以参考官方文档： http://reactnative.cn/docs/0.22/performance.html#content
 
-#刷新的实现
+# 刷新的实现
 
 目标：实现类似于html中window.reload的方法。
 
@@ -260,7 +261,7 @@ Util.refresh(nav); //Util是伪代码，是你定义refresh方法的对应对象
 ```
 
 
-#rn首页直接跳转子页面
+# rn首页直接跳转子页面
 
 如果你开发的是rn模块【rn模块嵌入到已有app中，定义可以参考前面定义一节】，可能进入rn模块的入口会很多，比如，用rn开发一个论坛模块，正常入口进来是直接展现帖子列表，也可能会有点击某个其它按钮【此按钮是不是rn的】会直接跳转到某个帖子的详情页。
 
@@ -300,7 +301,7 @@ getInitialRouteStack() {
     }
 ```
 
-#实现代码参考：
+# 实现代码参考：
 根据以上设计思路，笔者封装了一个Navigator组件，是对官方的navigator组件进行了一层封装，供大家参考：
 
 ```
