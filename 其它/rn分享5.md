@@ -103,7 +103,10 @@ bundle目录下的文件主要有2个作用。
 基础业务框架的入口文件会自动的将技术框架中的内容发布出来。
 
 ```
-import {     Navigator, // 其实是属于技术框架的，但是也可以引用到     BaseComponent,     BBPageRouterRNM,     IosBarUtil,     BottomTabUtil, } from '../../comm';
+import {
+    Navigator, // 其实是属于技术框架的，但是也可以引用到
+    BaseComponent,
+} from '../../comm';
 ```
 
 1. 基础业务框架入口文件：pregnancy/comm/index.js。
@@ -118,7 +121,9 @@ import {     Navigator, // 其实是属于技术框架的，但是也可以引
 // demo
 AppRegistry.registerComponent('demo', () => DemoIndex); 
 // 好玩频道
-AppRegistry.registerComponent('hw', () => HwIndex); ```
+AppRegistry.registerComponent('hw', () => HwIndex);
+
+```
 
 # 导航
 
@@ -150,7 +155,16 @@ AppRegistry.registerComponent('hw', () => HwIndex); ```
 在rn首页定义Navigator组件。
 
 ```
-render() {     return (         <Navigator nav={this.props.nav}                    ref={(nav) => {                        global.nav = nav;                    }}                    initialRouteStack={this.getInitialRouteStack()}         />     ); }
+render() {
+    return (
+            <Navigator nav={this.props.nav}            
+                       ref={(nav) => {
+                               global.nav = nav;
+                       }}
+                       initialRouteStack={this.getInitialRouteStack()}         
+            />
+            );
+       }
 
 ```
 
