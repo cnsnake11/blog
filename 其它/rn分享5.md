@@ -52,16 +52,23 @@ page：页面级组件。
 
 # 打包配置
 
-![](media/15064931554125.jpg)
+![](media/15094337861989.jpg)
+
 
 bundle目录下的文件主要有2个作用。
 
 1. 开发模式下的入口文件配置。
+
+孕育:localhost:8081/bundle/pregnancy-dev.bundle?platform=ios&dev=false
+
+时光:localhost:8081/bundle/lama-dev.bundle?platform=ios&dev=false
+
 2. 打正式包的入口文件配置。
 
-目前有用的文件有4个。
+执行打包命令可以看到执行的命令，里面包含这个位置。
 
-1. index.js。开发模式下的入口文件。在ios和android的app中目前都写了访问这个文件的链接，只需要配置rn服务器的ip和端口8081，就可以访问到这个文件并进行开发调试工作。
+文件说明，每个app都会有如下的文件，比如孕育中的：
+
 2. pregnancy.js。孕育app的入口文件配置。
 3. pregnancy-dev.js。开发环境下的孕育app入口文件配置。
 4. pregnancy-pro.js。正式环境下的孕育app入口文件配置，并屏蔽了默认的错误处理，同理其它正式环境下的一些配置和代码也可以写在这个文件中。打包命令会使用这个文件作为打包的入口文件。
