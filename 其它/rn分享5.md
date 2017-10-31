@@ -66,6 +66,14 @@ bundle目录下的文件主要有2个作用。
 3. pregnancy-dev.js。开发环境下的孕育app入口文件配置。
 4. pregnancy-pro.js。正式环境下的孕育app入口文件配置，并屏蔽了默认的错误处理，同理其它正式环境下的一些配置和代码也可以写在这个文件中。打包命令会使用这个文件作为打包的入口文件。
 
+# 官方提供的基础组件
+
+1. view
+1. text
+1. touch*
+1. scrollview
+1. listview
+
 # 框架体系结构及其引用方式
 
 ### 体系结构
@@ -313,11 +321,4 @@ loading。
 
 与原生的交互-rnm。
 自定义原生组件。音频，视频。
-
-
-### android和ios的区别点。
-1. text无margin和padding
-2. text的lineHeight不同
-3. 
-
 
