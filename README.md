@@ -2,6 +2,10 @@
 
 大家有问题欢迎留言issues讨论。
 
+### [【翻译】让网站适配iphoneX](https://github.com/cnsnake11/blog/blob/master/%E5%85%B6%E5%AE%83/Designing%20Websites%20for%20iPhone%20X.md)
+
+### [【原创】富文本编辑器4~站外图片的粘贴](https://github.com/cnsnake11/blog/blob/master/%E5%85%B6%E5%AE%83/%E5%AF%8C%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A84~%E7%AB%99%E5%A4%96%E5%9B%BE%E7%89%87%E7%9A%84%E7%B2%98%E8%B4%B4.md)
+
 ### [【原创】富文本编辑器3~自定义元素](https://github.com/cnsnake11/blog/blob/master/%E5%85%B6%E5%AE%83/%E5%AF%8C%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A83~%E8%87%AA%E5%AE%9A%E4%B9%89%E5%85%83%E7%B4%A0.md)
 
 ### [【原创】富文本编辑器2~复制粘贴的处理](https://github.com/cnsnake11/blog/blob/master/%E5%85%B6%E5%AE%83/%E5%AF%8C%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A82~%E5%A4%8D%E5%88%B6%E7%B2%98%E8%B4%B4%E7%9A%84%E5%A4%84%E7%90%86.md)
