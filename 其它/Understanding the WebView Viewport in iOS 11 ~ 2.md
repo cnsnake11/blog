@@ -14,11 +14,11 @@ Luckily, Apple gave us a way to control this behaviour via the viewport meta tag
 
 The viewport option you’ll be looking for is viewport-fit. It has three possible values:
 
-具体来说就是在viewport标签中使用viewport-fit属性，这个属性可以设置三个值：
-
 1. contain: The viewport should fully contain the web content. This means position fixed elements will be contained within the safe area on iOS 11.
 2. cover: The web content should fully cover the viewport. This means position fixed elements will be fixed to the viewport, even if that means they will be obscured. This restores the behaviour we had on iOS 10.
 3. auto: The default value, in this case it behaves the same as contain.
+
+具体来说就是在viewport标签中使用viewport-fit属性，这个属性可以设置三个值：
 
 1. contain：视窗会将内容显示全。也就是说，fixed元素会基于安全区域定位。【译者注：也就是会基于状态栏的下边框定位，在非iphoneX上会距离屏幕顶部20px，ihponeX下距离屏幕顶部44px】
 2. cover：内容会尽量的铺满整个视窗。此种情况，fixed元素会基于屏幕边缘定位，内容会被屏幕的状态栏或者iphoneX的感应条挡住。ios7~ios10其实就是这种模式。
