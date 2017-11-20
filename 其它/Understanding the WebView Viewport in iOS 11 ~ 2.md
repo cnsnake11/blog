@@ -4,13 +4,13 @@
 
 原文地址：http://ayogo.com/blog/ios11-viewport/
 
-书接上回。
+书接上回。在第一部分中，主要描述了不同ios版本下，webview的不同显示方式。本篇主要介绍解决方案。
 
 # iOS 11 Fixes 如何修改呢
 
 Luckily, Apple gave us a way to control this behaviour via the viewport meta tag. Even more luckily, they even backported this new viewport behaviour fix to the older, deprecated UIWebView!
 
-还好，苹果给了我们解决办法，通过使用viewport的meta标签来解决这个问题。而且，在已经废弃的老版本的UIWebview中，也支持了这种方法。
+苹果在viewport的meta标签上提供了新的属性来解决上述的问题。并且，在已经不推荐使用的UIWebView上也支持了这个新的属性。
 
 The viewport option you’ll be looking for is viewport-fit. It has three possible values:
 
@@ -35,14 +35,22 @@ So to restore your header bar to the very top of the screen, behind the status b
 
 But what about the iPhone X with its irregular shape? The status bar is no longer 20px tall, and with the inset for the camera and speaker, your header bars contents will be entirely inaccessible to users. It’s important to note that this also applies to footer bars pinned to the bottom of the screen, which will be obstructed by the microphone.
 
+iPhone X这种不规则屏幕该如何处理呢？iphone x 下状态栏不再是20px，并且还有突出的感应条，只有paddingTop=20px的fixed头部一定会被挡住。同样的，对应定位在底部的footer，也会被底部的虚拟按键挡住一些。
+
 Note: Your app will only use the full screen space on the iPhone X if you have a launch storyboard. Existing apps will be shown in a view box with black space at the top and bottom.
 
+注意：只有当你使用launch storyboard的时候，你的app才会使用iPhone X的全部屏幕。现有的app默认会运行在安全区域内，也就是距离屏幕上边和下边会有一定距离。
+
 ![](media/15109098965191.png)
-图：iPhone X brings some new challenges, even with viewport-fit set to cover.
+图：iPhone X brings some new challenges, even with viewport-fit set to cover.尽管设置了viewport-fit=cover，iPhone X仍会存在一些需要解决的问题。
 
 Luckily, Apple added a way to expose the safe area layout guides to CSS. They added a concept similar to CSS variables, originally called CSS constants. Think of these like CSS variables that are set by the system and cannot be overridden. They were proposed to the CSS Working Group for standardization, and accepted with one change: instead of using a function called constant() to access these variables, they’ll use a function called env().
 
+苹果给出了在css中声明安全区域的办法。加入了一类新的css变量，用constants()命名。这些变量是系统来声明和赋值的，开发者无法对其进行声明和赋值。并且，苹果已经将这类变量提交到了css的规范管理组中，管理组已经接受了这组变量，但是，将其重命名为env()。
+
 Note: iOS 11.0 uses the constant() syntax, but future versions will only support env()!
+
+说明：ios11.0使用constant()，在之后的版本中，使用env()。
 
 The 4 layout guide constants are:
 
@@ -50,12 +58,23 @@ The 4 layout guide constants are:
 2. env(safe-area-inset-bottom): The safe area inset amount (in CSS pixels) from the bottom of the viewport.
 3. env(safe-area-inset-left): The safe area inset amount (in CSS pixels) from the left of the viewport.
 4. env(safe-area-inset-right): The safe area inset amount (in CSS pixels) from the right of the viewport.
-	
+
+这组变量共有四个值：
+
+1. env(safe-area-inset-top): 安全区域距离屏幕顶部的距离。
+2. env(safe-area-inset-bottom): 安全区域距离屏幕底部的距离。
+3. env(safe-area-inset-left): 安全区域距离屏幕左侧的距离。
+4. env(safe-area-inset-right): 安全区域距离屏幕右侧的距离。
+
 Apple’s final gift to us is that these variables have also been backported to UIWebView.
 
-# Example with CSS constants
+在已经不推荐使用的UIWebView中也支持这些变量。
+
+# Example with CSS constants 示例代码
 
 Let’s say you have a fixed position header bar, and your CSS for iOS 10 currently looks like this:
+
+一般在ios10中，定义的fixed header会用用到如下的样式：
 
 ```
 header {
@@ -72,6 +91,8 @@ header {
 
 To make that adjust automatically for iPhone X and other iOS 11 devices, you would add a viewport-fit=cover option to your viewport meta tag, and change the CSS to reference the constant:
 
+为了适配ios11和iPhone X首先要在viewport标签上设置viewport-fit=cover，同时，在css中要如下处理：
+
 ```
 header {
     /* ... */
@@ -87,10 +108,14 @@ header {
 }
 ```
 
-It’s important to keep the fallback value there for older devices that won’t know how to interpret theconstant() or env() syntax. You can also use constants in CSS calc() expressions.
+It’s important to keep the fallback value there for older devices that won’t know how to interpret the constant() or env() syntax. You can also use constants in CSS calc() expressions.
+
+要注意老版本系统的兼容性，老系统不支持constant() 和 env()。上述的变量也可以被用在css的calc()函数中。
 
 ![](media/15109100299889.png)
-图：iPhone X fixed with automatic device padding added.
+图：iPhone X fixed with automatic device padding added。兼容了iPhone X的效果。
 
 You would also want to remember to do this for bottom navigation bars as well.
+
+如果需要处理的底部的话，原理也基本一致。
 
