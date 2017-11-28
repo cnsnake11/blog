@@ -10,9 +10,11 @@ In 2017, the toolbox for making sure your web page loads fast includes everythin
 
 The fresh web standard ``` <link rel="preload"> ```, that allows you to load critical resources faster, is coming to Firefox later this month. You can already try it out in Firefox Nightly or Developer Edition, and in the meantime, this is a great chance to review some fundamentals and dive deeper into performance associated with parsing the DOM.
 
-最新的web标准提供了``` <link rel="preload"> ```的写法，
+最新的web标准提供了``` <link rel="preload"> ```的写法，可以更快的加载特定的资源，这个特性在FIrefox中即将支持。现在，可以在firefox的nightly版本或者开发者版本中试用，同时在试用的时候，我们可以深入研究一下浏览器解析dom的细节。
 
 Understanding what goes on inside a browser is the most powerful tool for every web developer. We’ll look at how browsers interpret your code and how they help you load pages faster with speculative parsing. We’ll break down how defer and async work and how you can leverage the new keywordpreload.
+
+其实，对浏览器渲染原理的深入理解才是web开发者最强大的武器。在这篇文章中，将会介绍浏览器是如何解析代码，并且是如何使用预解析来提升页面的加载速度的。
 
 # Building blocks
 
