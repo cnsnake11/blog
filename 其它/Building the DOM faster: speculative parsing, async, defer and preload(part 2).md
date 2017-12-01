@@ -1,6 +1,6 @@
 # 【翻译】Building the DOM faster: speculative parsing, async, defer and preload (part 2)
 
-# 更快的dom渲染：预解析，异步，延迟和提前加载 ~ 第二部分
+# 更快的dom构建：预解析，异步，延迟和提前加载 ~ 第二部分
 
 原文地址：https://hacks.mozilla.org/2017/09/building-the-dom-faster-speculative-parsing-async-defer-and-preload/
 
@@ -8,7 +8,7 @@
 
 JavaScript blocks parsing because it can modify the document. CSS can’t modify the document, so it seems like there is no reason for it to block parsing, right?
 
-js会阻断页面的dom渲染是因为js可以修改html和dom。那么，css不能修改html和dom，所以理论上css应该不会阻断页面dom的渲染，对吗？
+js会阻断页面的dom构建是因为js可以修改html和dom。那么，css不能修改html和dom，所以理论上css应该不会阻断页面dom的构建，对吗？
 
 However, what if a script asks for style information that hasn’t been parsed yet? The browser doesn’t know what the script is about to execute—it may ask for something like the DOM node’s background-color which depends on the style sheet, or it may expect to access the CSSOM directly.
 
@@ -18,7 +18,7 @@ However, what if a script asks for style information that hasn’t been parsed y
 
 Because of this, CSS may block parsing depending on the order of external style sheets and scripts in the document. If there are external style sheets placed before scripts in the document, the construction of DOM and CSSOM objects can interfere with each other. When the parser gets to a script tag, DOM construction cannot proceed until the JavaScript finishes executing, and the JavaScript cannot be executed until the CSS is downloaded, parsed, and the CSSOM is available.
 
-所以，css是否会阻塞dom的渲染要看引入css和js的顺序。如果，css是在js之前被引入的，dom的渲染和cssom的渲染互不影响。当解析到script标签，dom渲染就会停下来直到js下载并执行完毕，同时，如果cssom还没有解析完成，js的执行也会被阻塞。下图很清楚的说明了这种关系：
+所以，css是否会阻塞dom的构建要看引入css和js的顺序。如果，css是在js之前被引入的，dom的构建和cssom的构建互不影响。当解析到script标签，dom构建就会停下来直到js下载并执行完毕，同时，如果cssom还没有解析完成，js的执行也会被阻塞。下图很清楚的说明了这种关系：
 
 ![](media/15120389027978.jpg)
 
