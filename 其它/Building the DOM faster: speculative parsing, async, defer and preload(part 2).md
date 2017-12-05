@@ -24,15 +24,21 @@ Because of this, CSS may block parsing depending on the order of external style 
 
 Another thing to keep in mind is that even if the CSS doesn’t block DOM construction, it blocks rendering. The browser won’t display anything until it has both the DOM and the CSSOM. This is because pages without CSS are often unusable. If a browser showed you a messy page without CSS, then a few moments later snapped into a styled page, the shifting content and sudden visual changes would make a turbulent user experience.
 
-
+另外一个需要注意的点是尽管css不会阻断DOM的构建，但是却会阻断页面的渲染。直到dom和cssom都准备完毕了，页面才会显示出来。这是因为，未加载完css的页面是不稳定的。如果浏览器一开始加载了一个没有css的页面，然后很快样式又加载了，这个页面样子转换的过程给用户的体验很不好。
 
 That poor user experience has a name – Flash of Unstyled Content or FOUC
 
+这种不佳的用户体验有一个名字 --- 无样式闪屏 或者 FOUC
+
 To get around these issues, you should aim to deliver the CSS as soon as possible. Recall the popular “styles at the top, scripts at the bottom” best practice? Now you know why it was there!
 
-# Back to the future – speculative parsing
+所以，为了让页面更快的展现出来，需要尽快的让css加载完成。还记得网页优化军规中的“将css放在页面上面，script放在页面下面”吗？以上就是这样做的原因。
+
+# Back to the future – speculative parsing 未来--预解析
 
 Pausing the parser whenever a script is encountered means that every script you load delays the discovery of the rest of the resources that were linked in the HTML.
+
+
 
 If you have a few scripts and images to load, for example–
 
@@ -56,7 +62,7 @@ The waterfall chart for the example above now looks more like this:
 
 ![](media/15120389914931.jpg)
 
-The download requests triggered this way are called “speculative” because it is still possible that the script could change the HTML structure (rememberdocument.write ?), resulting in wasted guesswork. While this is possible, it is not common, and that’s why speculative parsing still gives big performance improvements.
+The download requests triggered this way are called “speculative” because it is still possible that the script could change the HTML structure (remember document.write ?), resulting in wasted guesswork. While this is possible, it is not common, and that’s why speculative parsing still gives big performance improvements.
 
 While other browsers only preload linked resources this way, in Firefox the HTML parser also runs the DOM tree construction algorithm speculatively. The upside is that when a speculation succeeds, there’s no need to re-parse a part of the file to actually compose the DOM. The downside is that there’s more work lost if and when the speculation fails.
 
