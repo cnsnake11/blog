@@ -34,7 +34,7 @@ To get around these issues, you should aim to deliver the CSS as soon as possibl
 
 所以，为了让页面更快的展现出来，需要尽快的让css加载完成。还记得网页优化军规中的“将css放在页面上面，script放在页面下面”吗？以上就是这样做的原因。
 
-# Back to the future – speculative parsing 未来--预解析
+# Back to the future – speculative parsing 目前的优化手段--预解析
 
 Pausing the parser whenever a script is encountered means that every script you load delays the discovery of the rest of the resources that were linked in the HTML.
 
