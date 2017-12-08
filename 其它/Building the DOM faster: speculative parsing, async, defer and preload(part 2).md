@@ -34,13 +34,15 @@ To get around these issues, you should aim to deliver the CSS as soon as possibl
 
 所以，为了让页面更快的展现出来，需要尽快的让css加载完成。还记得网页优化军规中的“将css放在页面上面，script放在页面下面”吗？以上就是这样做的原因。
 
-# Back to the future – speculative parsing 目前的优化手段--预解析
+# Back to the future – speculative parsing 更先进的算法--预解析
 
 Pausing the parser whenever a script is encountered means that every script you load delays the discovery of the rest of the resources that were linked in the HTML.
 
-
+遇到script标签就停止解析html的算法会延迟页面其它资源文件的下载。
 
 If you have a few scripts and images to load, for example–
+
+如果有如下的代码：
 
 ```
 <script src="slider.js"></script>
@@ -52,108 +54,30 @@ If you have a few scripts and images to load, for example–
 
 –the process used to go like this:
 
+会有如下的过程：
+
 ![](media/15120389720745.jpg)
 
 That changed around 2008 when IE introduced something they called “the lookahead downloader”. It was a way to keep downloading the files that were needed while the synchronous script was being executed. Firefox, Chrome and Safari soon followed, and today most browsers use this technique under different names. Chrome and Safari have “the preload scanner” and Firefox – the speculative parser.
 
+在2008年的时候，ie首先提出了一个预先下载的算法。在解析到srcipt的标签的时候仍然继续下载页面的其它资源。firefox和chrome还有safari很快也使用了这个算法。不同的浏览器给他们起了不同的名字，chrome和safari称其为the preload scanner【提前加载扫描器】，firefox称其为speculative parser【预解析】。
+
 The idea is: even though it’s not safe to build the DOM while executing a script, you can still parse the HTML to see what other resources need to be retrieved. Discovered files are added to a list and start downloading in the background on parallel connections. By the time the script finishes executing, the files may have already been downloaded.
 
+这个思路很简单：虽然在执行js的过程中构建dom不安全，但是，可以继续解析html来下载其它的资源。这些资源会在后台并行的进行下载，当js执行完后，这些资源的下载可能已经完成。
+
 The waterfall chart for the example above now looks more like this:
+
+这个算法的图如下：
 
 ![](media/15120389914931.jpg)
 
 The download requests triggered this way are called “speculative” because it is still possible that the script could change the HTML structure (remember document.write ?), resulting in wasted guesswork. While this is possible, it is not common, and that’s why speculative parsing still gives big performance improvements.
 
+这个算法被称为预解析的原因是，因为js可能会改变html的结构（比如使用document.write），所以被下载的资源有可能是浪费的。虽然可能会存在浪费，但是这种情况并不常见，所以这个预解析的算法可以极大的提升页面加载性能。
+
 While other browsers only preload linked resources this way, in Firefox the HTML parser also runs the DOM tree construction algorithm speculatively. The upside is that when a speculation succeeds, there’s no need to re-parse a part of the file to actually compose the DOM. The downside is that there’s more work lost if and when the speculation fails.
 
-# (Pre)loading stuff
-
-This manner of resource loading delivers a significant performance boost, and you don’t need to do anything special to take advantage of it. However, as a web developer, knowing how speculative parsing works can help you get the most out of it.
-
-The set of things that can be preloaded varies between browsers. All major browsers preload:
-
-1. scripts
-1. external CSS
-1. and images from the ```<img>``` tag
-
-Firefox also preloads the poster attribute of video elements, while Chrome and Safari preload @import rules from inlined styles.
-
-There are limits to how many files a browser can download in parallel. The limits vary between browsers and depend on many factors, like whether you’re downloading all files from one or from several different servers and whether you are using HTTP/1.1 or HTTP/2 protocol. To render the page as quickly as possible, browsers optimize downloads by assigning priority to each file. To figure out these priorities, they follow complex schemes based on resource type, position in the markup, and progress of the page rendering.
-
-While doing speculative parsing, the browser does not execute inline JavaScript blocks. This means that it won’t discover any script-injected resources, and those will likely be last in line in the fetching queue.
-
-```
-var script = document.createElement('script');
-script.src = "//somehost.com/widget.js";
-document.getElementsByTagName('head')[0].appendChild(script);
-```
-
-You should make it easy for the browser to access important resources as soon as possible. You can either put them in HTML tags or include the loading script inline and early in the document. However, sometimes you want some resources to load later because they are less important. In that case, you can hide them from the speculative parser by loading them with JavaScript late in the document.
-
-You can also check out this MDN guide on how to optimize your pages for speculative parsing.
-
-# defer and async
-
-Still, synchronous scripts blocking the parser remains an issue. And not all scripts are equally important for the user experience, such as those for tracking and analytics. Solution? Make it possible to load these less important scripts asynchronously.
-
-The defer and async attributes were introduced to give developers a way to tell the browser which scripts to handle asynchronously.
-
-Both of these attributes tell the browser that it may go on parsing the HTML while loading the script “in background”, and then execute the script after it loads. This way, script downloads don’t block DOM construction and page rendering. Result: the user can see the page before all scripts have finished loading.
-
-The difference between defer and async is which moment they start executing the scripts.
-
-defer was introduced before async. Its execution starts after parsing is completely finished, but before the DOMContentLoaded event. It guarantees scripts will be executed in the order they appear in the HTML and will not block the parser.
-
-![](media/15120391161617.jpg)
-
-async scripts execute at the first opportunity after they finish downloading and before the window’s load event. This means it’s possible (and likely) that async scripts are not executed in the order in which they appear in the HTML. It also means they can interrupt DOM building.
-
-Wherever they are specified, async scripts load at a low priority. They often load after all other scripts, without blocking DOM building. However, if anasync script finishes downloading sooner, its execution can block DOM building and all synchronous scripts that finish downloading afterwards.
-
-![](media/15120391311853.jpg)
-
-Note: Attributes async and defer work only for external scripts. They are ignored if there’s no src.
-
-# preload
-
-async and defer are great if you want to put off handling some scripts, but what about stuff on your web page that’s critical for user experience? Speculative parsers are handy, but they preload only a handful of resource types and follow their own logic. The general goal is to deliver CSS first because it blocks rendering. Synchronous scripts will always have higher priority than asynchronous. Images visible within the viewport should be downloaded before those below the fold. And there are also fonts, videos, SVGs… In short – it’s complicated.
-
-As an author, you know which resources are the most important for rendering your page. Some of them are often buried in CSS or scripts and it can take the browser quite a while before it even discovers them. For those important resources you can now use ```<link rel="preload">``` to communicate to the browser that you want to load them as soon as possible.
-
-All you need to write is:
-
-```
-<link rel="preload" href="very_important.js" as="script">
-```
-
-You can link pretty much anything and the as attribute tells the browser what it will be downloading. Some of the possible values are:
-
-1. script
-1. style
-1. image
-1. font
-1. audio
-1. video
-
-You can check out the rest of the content types on MDN.
-
-Fonts are probably the most important thing that gets hidden in the CSS. They are critical for rendering the text on the page, but they don’t get loaded until browser is sure that they are going to be used. That check happens only after CSS has been parsed, and applied, and the browser has matched CSS rules to the DOM nodes. This happens fairly late in the page loading process and it often results in an unnecessary delay in text rendering. You can avoid it by using the preload attribute when you link fonts.
-
-One thing to pay attention to when preloading fonts is that you also have to set the crossorigin attribute even if the font is on the same domain:
-
-```
-<link rel="preload" href="font.woff" as="font" crossorigin>
-```
-
-The preload feature has limited support at the moment as the browsers are still rolling it out, but you can check the progress here.
-
-# Conclusion
-
-Browsers are complex beasts that have been evolving since the 90s. We’ve covered some of the quirks from that legacy and some of the newest standards in web development. Writing your code with these guidelines will help you pick the best strategies for delivering a smooth browsing experience.
-
-If you’re excited to learn more about how browsers work here are some other Hacks posts you should check out:
-
-Quantum Up Close: What is a browser engine?
- Inside a super fast CSS engine: Quantum CSS (aka Stylo)
+在这个算法中，其它的浏览器都仅仅是执行下载，而firefox同时也会继续执行dom的构建。这样做的优势很明显，当预解析成功，dom的构建会更快的完成。但是，劣势也存在，当预解析失败，浏览器执行了很多无效的工作。
 
 
