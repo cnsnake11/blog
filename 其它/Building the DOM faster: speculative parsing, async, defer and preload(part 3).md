@@ -87,15 +87,23 @@ Note: Attributes async and defer work only for external scripts. They are ignore
 
 async and defer are great if you want to put off handling some scripts, but what about stuff on your web page that’s critical for user experience? Speculative parsers are handy, but they preload only a handful of resource types and follow their own logic. The general goal is to deliver CSS first because it blocks rendering. Synchronous scripts will always have higher priority than asynchronous. Images visible within the viewport should be downloaded before those below the fold. And there are also fonts, videos, SVGs… In short – it’s complicated.
 
+async和defer可以处理掉那些页面初始化过程中不重要的scripts，那么那些重要的资源还有更好的处理办法吗？浏览器的预解析引擎虽然用起来简单，但是他只能解析小部分的资源类型，而且算法也较为固定。我们的目标是让css尽早下载解析完成，同步的脚本的优先级高于异步脚本，在视区内的图片应该尽早下载，而且还有像字体文件，视频，svg等等资源需要考虑，总之，情况很复杂。
+
 As an author, you know which resources are the most important for rendering your page. Some of them are often buried in CSS or scripts and it can take the browser quite a while before it even discovers them. For those important resources you can now use ```<link rel="preload">``` to communicate to the browser that you want to load them as soon as possible.
 
+只有开发者才能知道哪些资源对页面初始化过程是最重要的。这些资源很可能是通过css或者js来引入的，浏览器对他们的下载时机是很晚的。那么现在，你可以使用```<link rel="preload">```来加载这类资源，浏览器会在第一时间加载这些资源。
+
 All you need to write is:
+
+你可以这样写：
 
 ```
 <link rel="preload" href="very_important.js" as="script">
 ```
 
 You can link pretty much anything and the as attribute tells the browser what it will be downloading. Some of the possible values are:
+
+这中preload的写法支持很多种资源类型，比如：
 
 1. script
 1. style
@@ -106,9 +114,15 @@ You can link pretty much anything and the as attribute tells the browser what it
 
 You can check out the rest of the content types on MDN.
 
+你可以查看MDN的官方文档：https://developer.mozilla.org/en-US/docs/Web/HTML/Preloading_content#What_types_of_content_can_be_preloaded
+
 Fonts are probably the most important thing that gets hidden in the CSS. They are critical for rendering the text on the page, but they don’t get loaded until browser is sure that they are going to be used. That check happens only after CSS has been parsed, and applied, and the browser has matched CSS rules to the DOM nodes. This happens fairly late in the page loading process and it often results in an unnecessary delay in text rendering. You can avoid it by using the preload attribute when you link fonts.
 
+字体文件就是被隐藏在css文件中并且页面初始化过程很重要的资源。但是，加载字体文件的时机一般都比较晚，因为需要等css先加载完成，并且应用到dom节点上之后，字体文件才会被加载。所以，文本的渲染可能会有延迟的感觉。现在，可以通过使用preload来尽早加载字体文件了。
+
 One thing to pay attention to when preloading fonts is that you also have to set the crossorigin attribute even if the font is on the same domain:
+
+加载字体文件的时候，通常要加一个crossorigin的属性，这是固定写法。
 
 ```
 <link rel="preload" href="font.woff" as="font" crossorigin>
@@ -116,8 +130,12 @@ One thing to pay attention to when preloading fonts is that you also have to set
 
 The preload feature has limited support at the moment as the browsers are still rolling it out, but you can check the progress here.
 
-# Conclusion
+目前preload属性只有少部分的浏览器支持，可以通过 https://caniuse.com/#search=preload 查看。
+
+# Conclusion 总结
 
 Browsers are complex beasts that have been evolving since the 90s. We’ve covered some of the quirks from that legacy and some of the newest standards in web development. Writing your code with these guidelines will help you pick the best strategies for delivering a smooth browsing experience.
+
+浏览器重90年代发展到现在已经越来越复杂了。很多遗留的特性和未来的标准混杂在一起。通过这篇文章，你可以理解如何让页面的渲染更快速的原理。
 
 
