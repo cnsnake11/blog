@@ -1,6 +1,6 @@
-#ReactNative增量升级方案
+# ReactNative增量升级方案
 
-#前言
+# 前言
 facebook的react-native给我们带来了用js写出原生应用的同时，也使得使用RN编写的代码的在线升级变得可能，终于可以不通过应用市场来进行升级，极大的提升了app修bug和赋予新功能的能力。----使用h5的方式也可以做到，但是rn的用户体验可要远远超过h5啊。
 
 一般使用RN编写的app的线上使用方式，是将react-native bundle命令打出bundle文件和assets文件夹，直接内置到app中，app在viewcontroller或者activity中直接加载app内部的bundle文件，比如下图。
@@ -12,7 +12,7 @@ facebook的react-native给我们带来了用js写出原生应用的同时，也�
 
 本文主要基于以上思路，讲解增量升级的解决方案。
 
-#何为增量？
+# 何为增量？
 
  一个完整的RN-app程序通常包含以下几个部分：
  
@@ -41,7 +41,7 @@ native代码别想了，没法在线升级，要是能大家就都不使用应�
 最后，app中通过 旧版本(v6) + 增量包(v6~v10.zip) = 新版本(v10) ，计算出了新版本的全量包。
 
  
-#增量算法
+# 增量算法
  
  assets增量算法，比较简单，就是比对，可以很容易的比较出新增的文件，和不同的文件（使用md5）。
  
@@ -55,7 +55,7 @@ native代码别想了，没法在线升级，要是能大家就都不使用应�
 google开源库地址：https://github.com/bystep15/google-diff-match-patch
 
 
-#codepush
+# codepush
 
 微软的codepush也做了类似的事情，不过由于以下原因，我们团队没敢使用其作为解决方案。
 
@@ -67,7 +67,7 @@ google开源库地址：https://github.com/bystep15/google-diff-match-patch
 
 codepush地址：http://microsoft.github.io/code-push/
 
-#bundle要求的app最小版本
+# bundle要求的app最小版本
 
 本文中一般用min-v或者appMinV表示。
 
@@ -76,15 +76,15 @@ codepush地址：http://microsoft.github.io/code-push/
 试想，如果bundle依赖了一个native的一个新的接口，这个接口在v3版本的app中才发布，如果v2版本的app升级了这个bundle，那么必然会报错，严重的可能会导致app的崩溃。
 
 
-#系统结构设计与各模块职责
+# 系统结构设计与各模块职责
 ![312313123](media/312313123.png)
 
-#bundle仓库设计
+# bundle仓库设计
 
 存储全量bundle和生成增量patch
 
 
-##node patch 命令
+## node patch 命令
 
 在bundle目录下放入一个符合要求【参考目录结构说明】的新版本目录，比如0.3.0,然后执行以下命令。
 
@@ -94,11 +94,11 @@ codepush地址：http://microsoft.github.io/code-push/
 
 然后在patch目录中就会生成0.3.0的增量包，同时patch目录下的update.json文件也会重新生成.
 
-##node update.json 命令
+## node update.json 命令
 
 在patch目录下重新生成update.json文件
 
-##目录结构说明
+## 目录结构说明
 ![](media/14534529649291.jpg)
 
 ```
@@ -135,7 +135,7 @@ lib    存放打包用依赖的第三方的源码
 patch.js    patch命令入口
 update.json.js    update.json命令入口
 ```
-##config.json示例
+## config.json示例
 
 ```
 {
@@ -150,7 +150,7 @@ update.json.js    update.json命令入口
 ```
 
 
-##update.json示例
+## update.json示例
 
 ```
 [
@@ -191,7 +191,7 @@ update.json.js    update.json命令入口
 
 ```
 
-#升级服务器设计
+# 升级服务器设计
 
 ## 接口patch/query
 
@@ -199,7 +199,7 @@ update.json.js    update.json命令入口
 
 此接口会有以下4个场景的使用情况，每个场景返回的json示例已经提供在后面文档中。
 
-###输入参数
+### 输入参数
 
     ```
     bundleV : app中的bundle版本
@@ -208,7 +208,7 @@ update.json.js    update.json命令入口
 
     ```
 
-###返回json各项说明
+### 返回json各项说明
 
 
  1. status : 本次请求后台是否发生了错误
@@ -241,7 +241,7 @@ update.json.js    update.json命令入口
 }
 ```
 
-###场景2
+### 场景2
 无需升级,已经是最新版本
 
 ```
@@ -253,7 +253,7 @@ update.json.js    update.json命令入口
 }
 ```
 
-###场景3
+### 场景3
 能升级,能升级到当前appMinV的最新bundle版本,但不是最新的bundle,想升最新bundle，必须先升app
 
 ```
@@ -270,7 +270,7 @@ update.json.js    update.json命令入口
 }
 ```
 
-###场景4
+### 场景4
 不能升级,已经是当前appMinV的最新bundle,但不是最新的bundle,想升最新bundle，必须先升app
 
 ```
@@ -284,7 +284,7 @@ update.json.js    update.json命令入口
 }
 ```
 
-#native客户端设计
+# native客户端设计
 
 客户端的主要工作就是发请求到升级服务器询问是否能升级，然后根据返回的信息，下载升级包，解压升级包，安装升级包。
 
@@ -294,12 +294,12 @@ update.json.js    update.json命令入口
 
 此部分详细设计后边会补充。
 
-#遗留问题
+# 遗留问题
 目前rn将安卓的图片放入到res目录中，导致安卓图片不能使用在线升级的解决方案，但是codepush的作者已经重构了此部分内容，并提pr到rn，rn团队也接受了这个pr，会在近期的版本中发布。
 
 参考地址：https://github.com/facebook/react-native/pull/4527
 
-#近期开源
+# 近期开源
 本部分内容核心的几个部分都已经完成，近期完善之后，会开源出来。
 
 
