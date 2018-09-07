@@ -163,6 +163,7 @@ Note: The invalid at computed-value time concept exists because variables can’
 说明：不合法的变量值问题是因为变量的出错时机是比较晚的，所以，当浏览器识别到变量值无效的时候，已经将其它的有效的之前定义的值抛弃了。
 
 
+补充说明：最后这里说的是【变量】值不合法才会导致整条样式失效。如果是直接不支持env或者不支持env里写的属性名称（这些都不是变量的情况），就不会导致之前的有效定义被抛弃（在chrome里做过测试）。
 
 
 
