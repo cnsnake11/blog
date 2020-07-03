@@ -1,0 +1,36 @@
+[
+    {
+        "title": "ReactNative增量升级方案",
+        "url": "https://raw.githubusercontent.com/cnsnake11/blog/master/ReactNative%E5%BC%80%E5%8F%91%E6%8C%87%E5%AF%BC/ReactNative%E5%A2%9E%E9%87%8F%E5%8D%87%E7%BA%A7%E6%96%B9%E6%A1%88.md",
+        "content": "facebook的react-native给我们带来了用js写出原生应用的同时，也使得使用RN编写的代码的在线升级变得可能，终于可以不通过应用市场来进行升级，极大的提升了app修bug和赋予新功能的能力。----使用h5的方式也可以做到，但是rn的用户体验可要远远超过h5啊。一般使用RN编写的app的线上使用方式，是将react-native bundle命令打出bundle文件和assets文件夹，直接内置到app中，app在viewcontroller或者activity中直接加载app内部的bundle文件，比如下图。当修改了代码或者图片的时候，只要app使用新的bundle文件和assets文件夹，就完成了一次在线升级。",
+        "imgUrl": "http://p0.so.qhimg.com/bdr/_240_/t0130ce82fe2c9e1b9a.jpg"
+    },
+
+    {
+        "title": "ReactNative的组件架构设计",
+        "url": "https://raw.githubusercontent.com/cnsnake11/blog/master/ReactNative%E5%BC%80%E5%8F%91%E6%8C%87%E5%AF%BC/ReactNative%E7%9A%84%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1.md",
+        "content": "请注意，本篇写的是react native的架构设计，如果你用react来开发web程序，本篇文章只能仅供参考，问题都没有在web上去考虑过。本篇较长，前面是目前flux开源框架的一些分析，后面是架构设计过程。您可以直奔主题。用RN最大的难题是设计思想的转变，以前的设计方法论已经不太适用了。而RN仅仅提供了view的框架，构建完整app的架构并没有直接提供。考虑目前遇到的如下问题，希望架构给出解决方案。",
+        "imgUrl": "http://p3.so.qhimg.com/bdr/_240_/t0147ebd93e5aec3513.jpg"
+    },
+
+    {
+        "title": "ReactNative组件状态设计思考",
+        "url": "https://raw.githubusercontent.com/cnsnake11/blog/master/ReactNative%E5%BC%80%E5%8F%91%E6%8C%87%E5%AF%BC/ReactNative%E7%BB%84%E4%BB%B6%E7%8A%B6%E6%80%81%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%80%83.md",
+        "content": "设计React组件与设计一个jquery组件或者一个原生js组件最大的区别就是状态的设计。按照原来设计组件的方法论，一个UI组件对外应该具有属性、事件、接口，对内具有内部属性，内部接口。1. 属性就像一份配置文件，描述了组件应该具有的功能、外观或者初始状态。2. 事件是组件在工作工程中，当满足某种条件的时候触发的回调函数3. 接口是组件对象的方法，可以让组件去执行某个任务",
+        "imgUrl": "http://p3.so.qhimg.com/bdr/_240_/t013b826be69e97f2d8.jpg"
+    },
+
+    {
+        "title": "ReactNative安卓首屏白屏优化",
+        "url": "https://raw.githubusercontent.com/cnsnake11/blog/master/ReactNative%E5%BC%80%E5%8F%91%E6%8C%87%E5%AF%BC/ReactNative%E5%AE%89%E5%8D%93%E9%A6%96%E5%B1%8F%E7%99%BD%E5%B1%8F%E4%BC%98%E5%8C%96.md",
+        "content": "公司现有app中部分模块使用reactnative开发，在实施的过程中，rn良好的兼容性，极佳的加载、动画性能，提升了我们的开发、测试效率，提升了用户体验。但是，在android中，当点击某个rn模块的入口按钮，弹出rn的activity到rn的页面展现出来的过程中，会有很明显的白屏现象，不同的机型不同（cpu好的白屏时间短），大概1s到2s的时间。注意，只有在真机上才会有此现象，在模拟器上没有此现象完全是秒开。ios上也是秒开，测试的最低版本是ios7，iphone4s。",
+        "imgUrl": "http://p3.so.qhimg.com/bdr/_240_/t01d369ccc394843f33.jpg"
+    },
+
+    {
+        "title": "ReactNative导航设计与实现",
+        "url": "https://raw.githubusercontent.com/cnsnake11/blog/master/ReactNative%E5%BC%80%E5%8F%91%E6%8C%87%E5%AF%BC/ReactNative%E5%AF%BC%E8%88%AA%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0.md",
+        "content": "关于reactnaitve的导航，官方提供了2个组件，NavigatorIOS和Navigator，其中官方并不推荐使用NavigatorIOS，它不是官方维护的，不能保证及时的更新和维护。所以本文中是以Navigator组件为基础，进行导航的设计和实现。Navigator的劣势：Navigator组件是纯js的实现，所以在页面进行转场动画的过程中，如果js不能保证在16ms内完成其它操作的话，转场动画会有卡顿现象，后面会介绍优化的方案。官方的Navigator组件使用方式较为灵活，本文的目的是选取一种最佳用法，并提取出通用功能应对常用场景，规范和设计项目中导航的使用。",
+        "imgUrl": "http://p2.so.qhimg.com/bdr/_240_/t018c3358b3c28ed25c.jpg"
+    }
+]

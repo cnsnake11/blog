@@ -1,0 +1,46 @@
+# 弱特征广告方案
+
+# 目标
+
+一般浏览器拦截页面内广告会使用css选择器，比如qq浏览器的规则：
+
+```
+hide=###app_mask,##.load-app,##div[class^="bbt-pregnant-timeline bbt-pregnant-timeline-"],##div[class^="bottom-layer-"],##div[class="bbt-header-dingtong"],##div[class*="-header-pregnancy"],##div[class*="-footer-pregnancy"],##section[class$="-brand"],##section[class$="-tool"],##div[class$="-footer-expand"]
+filter=/base.js?v*&method=$third-party /www/default/base.js$third-party
+```
+从规则可以看出，弱特征化就是将class弱特征化。
+
+# 方案1 纯前端方案
+
+方案描述：
+1. 广告模板包括css，html和js，页面直接输出此模板
+2. 广告引擎js会读取模板，并将css中的class名称替换成随机，同时替换html和js的class名称
+3. 最后将替换后的模板嵌入到页面中
+
+优势：
+1. 每次算法都是随机，通过classname来定位广告基本不可能
+
+劣势：
+1. 插入html的位置不好确定，位置可能会成为新的特征
+2. 广告模板是特征很强的元素，不能加密，直接输出到html中，线索被暴露了
+3. 广告模板转换为真正的广告html是一个关键路径方法，理论上，可以通过上述线索较为容易的找到，找到后，浏览器引擎可以在方法执行前，将此方法置空
+4. 纯前端渲染，页面会有一定时间的阻塞
+
+# 方案2 前后端结合方案
+
+方案描述：
+
+
+优势：
+1.
+
+劣势：
+1. css文件增大，浪费了流量
+2. js编码复杂一些，不过广告功能一般比较简单，可以接受
+3. 如果广告拦截使用枚举的方式和你死磕，好像没有什么好的办法，因为换一组盐，就要重新生成css文件，流量较为浪费。
+4. 盐如果发生了变化，
+
+
+
+
+
